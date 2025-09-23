@@ -5,72 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EXS Guide</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css">
+  <!-- CSS 최신 로드 (캐시 무력화) -->
+  <link rel="stylesheet" href="styles.css?v=6">
   <style>
     .hidden { display: none !important; }
     .modal {
       position: fixed; inset: 0; background: rgba(0,0,0,0.5);
       display: flex; justify-content: center; align-items: center; z-index: 1000;
     }
-    .modal-content { background: #fff; padding: 20px; border-radius: 8px; min-width: 320px; max-width: 680px; width: 90%; }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      min-width: 320px;
+      max-width: 680px;
+      width: 90%;
+    }
     .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
     .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
-
-    /* 배너 꾸미기 */
-    .app-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 16px;
-      background: linear-gradient(90deg, #0044cc, #0066ff);
-      color: white;
-    }
-    .app-header .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .app-header .logo {
-      height: 32px;
-      width: auto;
-    }
-    .search-wrap {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      padding: 0 16px;
-    }
-    .search-wrap input {
-      width: 100%;
-      max-width: 400px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 14px;
-    }
-    .actions button {
-      background: #fff;
-      color: #0044cc;
-      border: none;
-      border-radius: 4px;
-      padding: 6px 12px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .actions button:hover {
-      background: #eee;
-    }
   </style>
 </head>
 <body>
   <!-- 상단 배너 -->
-  <header class="app-header">
+  <header class="app-bar">
     <!-- 좌: 로고 -->
     <div class="brand" onclick="navigate('home')">
-      <img src="icons/logo.png" alt="기관 로고" class="logo">
+      <img src="icons/logo.png?v=1" alt="기관 로고" class="logo">
       <span>EXS Guide</span>
     </div>
     <!-- 중: 검색창 -->
@@ -107,7 +67,7 @@
     <button onclick="exitAdmin()">관리자 종료</button>
   </div>
 
-  <!-- 최신 JS 강제 로드 -->
-  <script src="app.js?v=5"></script>
+  <!-- JS 최신 로드 (캐시 무력화) -->
+  <script src="app.js?v=6"></script>
 </body>
 </html>
