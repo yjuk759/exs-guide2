@@ -50,15 +50,36 @@ function getLocalVersion(){
 }
 
 // ===== 관리자 =====
+// ▶ prompt() 대신 중앙 모달로 로그인 처리
 function enterAdmin(){
-  const pass = prompt('관리자 비밀번호를 입력하세요');
-  if(pass === 'exsadmin'){
-    state.admin = true;
-    byId('adminBar')?.classList.remove('hidden');
-  } else {
-    alert('비밀번호가 올바르지 않습니다.');
-  }
+  showModal('관리자 로그인', `
+    <div class="form-row full">
+      <label>비밀번호</label>
+      <input id="admin_pass" type="password" placeholder="관리자 비밀번호 입력">
+    </div>
+  `, () => {
+    const pass = byId('admin_pass').value.trim();
+    if (pass === 'exsadmin'){
+      state.admin = true;
+      byId('adminBar')?.classList.remove('hidden');
+    } else {
+      alert('비밀번호가 올바르지 않습니다.');
+    }
+  });
+
+  // 입력창 자동 포커스 + Enter로 제출
+  setTimeout(() => {
+    const inp = byId('admin_pass');
+    if (!inp) return;
+    inp.focus();
+    inp.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter') {
+        byId('modalSubmit')?.click();
+      }
+    });
+  }, 0);
 }
+
 function exitAdmin(){
   state.admin = false;
   byId('adminBar')?.classList.add('hidden');
