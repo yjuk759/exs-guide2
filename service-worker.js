@@ -1,4 +1,4 @@
-const CACHE_NAME='exs-guide-v9';
+const CACHE_NAME='exs-guide-v10';
 const ASSETS=[
   './',
   './index.html',
