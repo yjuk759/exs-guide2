@@ -273,7 +273,7 @@ async function boot(){
 
   // 1) 서버에서 항상 최신 manuals.json 가져오기 (캐시 무력화)
   try {
-    const res = await fetch('manuals.json?ts=' + Date.now());
+    const res = await fetch('manuals.json?ts=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
 
