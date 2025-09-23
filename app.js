@@ -51,7 +51,7 @@ function getLocalVersion(){
 
 // ===== 관리자 =====
 function enterAdmin(){
-  const pass = prompt('관리자 비밀번호를 입력하세요 (임시: exsadmin)');
+  const pass = prompt('관리자 비밀번호를 입력하세요');
   if(pass === 'exsadmin'){
     state.admin = true;
     byId('adminBar')?.classList.remove('hidden');
