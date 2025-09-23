@@ -259,3 +259,18 @@ window.addEventListener('hashchange', render);
 
 // 시작
 boot();
+// === 전역 바인딩(인라인 onclick 호환용) ===
+window.enterAdmin     = enterAdmin;
+window.exitAdmin      = exitAdmin;
+window.showAddCategory= showAddCategory;
+window.showAddManual  = showAddManual;
+window.exportData     = exportData;
+
+window.showModal      = showModal;
+window.hideModal      = hideModal;
+window.closeModal     = closeModal;
+
+// 검색창 이벤트도 혹시 인라인으로 쓸 경우 대비
+window.onSearch       = onSearch;
+window.navigate       = navigate;
+
