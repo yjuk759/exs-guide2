@@ -1,0 +1,79 @@
+{
+  "categories": [
+    {
+      "id": "CAT_OPS",
+      "name": "영업운영",
+      "order": 1,
+      "icon": "🧭"
+    },
+    {
+      "id": "CAT_CUST",
+      "name": "민원응대",
+      "order": 2,
+      "icon": "🗣️"
+    },
+    {
+      "id": "CAT_EMER",
+      "name": "긴급상황",
+      "order": 3,
+      "icon": "🚨"
+    }
+  ],
+  "manuals": [
+    {
+      "id": "MNL_OPS_001",
+      "category_id": "CAT_OPS",
+      "title": "현금통행 처리 절차",
+      "summary": "현금 결제, 영수증 발급, 회수·정산",
+      "content": "1) 차종 확인 → 2) 통행료 산정 → 3) 영수증 발급 → 4) 마감 정산.\n유의: 위반차량 의심 시 CCTV 확인 및 상급자 보고.",
+      "tags": "정산, 현금, 영수증",
+      "attachment_url": ""
+    },
+    {
+      "id": "MNL_OPS_002",
+      "category_id": "CAT_OPS",
+      "title": "무인요금소 점검 체크리스트",
+      "summary": "개시/마감 점검 항목",
+      "content": "개시: 전원·네트워크·차단기·영수증 용지 확인.\n마감: 수납 금액 대조, CCTV 기록 보관.",
+      "tags": "무인, 점검, 차단기",
+      "attachment_url": ""
+    },
+    {
+      "id": "MNL_CUST_001",
+      "category_id": "CAT_CUST",
+      "title": "통행권 분실 처리",
+      "summary": "차량번호 확인 및 임시통행권",
+      "content": "차량번호·시간대·구간 조회 후 임시통행권 발급, 본사 시스템에 분실 등록.\n민원인 감정완화 문구 예시 포함.",
+      "tags": "분실, 임시통행권, 민원",
+      "attachment_url": ""
+    },
+    {
+      "id": "MNL_CUST_002",
+      "category_id": "CAT_CUST",
+      "title": "과오납 환불 안내",
+      "summary": "현장 환불 불가 시 절차",
+      "content": "1) 과오납 확인서 작성 → 2) 환불신청 링크·양식 제공 → 3) 처리기한 고지(영업일 기준 ○일).",
+      "tags": "환불, 과오납, 안내",
+      "attachment_url": ""
+    },
+    {
+      "id": "MNL_EMR_001",
+      "category_id": "CAT_EMER",
+      "title": "차단기 고장 즉응",
+      "summary": "수동개방·안전유도·보고체계",
+      "content": "즉시 수동개방, 차량 정지선 유도, 무전 보고(운영센터/본사).\n로그 기록: 발생시각·차선·처치·복구시각.",
+      "tags": "차단기, 고장, 즉응, 긴급",
+      "attachment_url": ""
+    },
+    {
+      "id": "MNL_EMR_002",
+      "category_id": "CAT_EMER",
+      "title": "화재·연기 발생 시 행동요령",
+      "summary": "119 연계·교통통제",
+      "content": "사람 우선 대피, 119 신고, 소화기 초기진압 시도(가능 범위). 교통통제·우회 유도, 상황일지 작성.",
+      "tags": "화재, 긴급, 통제, 긴급",
+      "attachment_url": ""
+    }
+  ],
+  "exported_at": "2025-09-23T01:02:27.632822Z"
+}
