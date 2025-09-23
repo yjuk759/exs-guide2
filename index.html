@@ -9,23 +9,83 @@
   <style>
     .hidden { display: none !important; }
     .modal {
-      position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
       display: flex; justify-content: center; align-items: center; z-index: 1000;
     }
     .modal-content { background: #fff; padding: 20px; border-radius: 8px; min-width: 320px; max-width: 680px; width: 90%; }
     .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
     .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
+
+    /* 배너 꾸미기 */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: linear-gradient(90deg, #0044cc, #0066ff);
+      color: white;
+    }
+    .app-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .app-header .logo {
+      height: 32px;
+      width: auto;
+    }
+    .search-wrap {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+    }
+    .search-wrap input {
+      width: 100%;
+      max-width: 400px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+    .actions button {
+      background: #fff;
+      color: #0044cc;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .actions button:hover {
+      background: #eee;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>EXS Guide</h1>
-    <button onclick="enterAdmin()">관리자</button>
+  <!-- 상단 배너 -->
+  <header class="app-header">
+    <!-- 좌: 로고 -->
+    <div class="brand" onclick="navigate('home')">
+      <img src="icons/logo.png" alt="기관 로고" class="logo">
+      <span>EXS Guide</span>
+    </div>
+    <!-- 중: 검색창 -->
+    <div class="search-wrap">
+      <input id="searchInput" type="search" placeholder="검색: 통행권, 민원, 화재..." oninput="onSearch(this.value)" />
+    </div>
+    <!-- 우: 관리자 버튼 -->
+    <div class="actions">
+      <button onclick="enterAdmin()">관리자</button>
+    </div>
   </header>
 
   <main id="app"></main>
 
-  <!-- 모달 (app.js가 기대하는 구조) -->
+  <!-- 모달 -->
   <div id="modal" class="modal hidden" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
@@ -41,7 +101,6 @@
 
   <!-- 관리자 바 -->
   <div id="adminBar" class="hidden" style="position:fixed; bottom:20px; right:20px; background:#0044cc; color:#fff; padding:10px; border-radius:8px;">
-    <!-- ⬇ 함수 이름을 app.js와 일치시킴 -->
     <button onclick="showAddCategory()">카테고리 추가</button>
     <button onclick="showAddManual()">매뉴얼 추가</button>
     <button onclick="exportData()">데이터 내보내기(JSON)</button>
