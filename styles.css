@@ -1,37 +1,240 @@
-*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Malgun Gothic,sans-serif;background:#f7f9fc;color:#0a0a0a}
-.app-bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;padding:10px 12px;background:#0b5fff;color:#fff}
-.brand{font-weight:700;cursor:pointer}
-.search-wrap{flex:1}
-.search-wrap input{width:100%;padding:8px 10px;border:none;border-radius:8px}
-.actions .ghost{background:transparent;border:1px solid rgba(255,255,255,.6);color:#fff;border-radius:8px;padding:6px 10px;cursor:pointer}
-.footer{position:sticky;bottom:0;display:flex;justify-content:center;gap:8px;padding:10px;font-size:12px;background:#eef3ff;color:#3a4a7a}
-.footer .sep{opacity:.5}
-.container{max-width:920px;margin:0 auto;padding:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.card{background:#fff;border:1px solid #e6ebf5;border-radius:12px;padding:14px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.02)}
-.card:hover{box-shadow:0 6px 24px rgba(0,0,0,.08);transform:translateY(-1px);transition:.2s}
-.card .title{font-weight:700;margin-bottom:6px}
-.badge{display:inline-flex;align-items:center;gap:6px;background:#eff3ff;color:#284cc8;border:1px solid #dce6ff;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
-.hidden{display:none}
-.kicker{font-size:12px;color:#5b6b91;margin-bottom:8px}
-.list{display:flex;flex-direction:column;gap:10px}
-.item{background:#fff;border:1px solid #e6ebf5;border-radius:12px;padding:12px;cursor:pointer}
-.item .title{font-weight:700}
-.item .sub{font-size:13px;color:#4b5a7a;margin-top:4px}
-.page-title{font-size:20px;font-weight:800;margin:6px 0 10px}
-.breadcrumbs{font-size:12px;color:#5b6b91;margin-bottom:8px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.chip{background:#eef3ff;color:#284cc8;padding:4px 8px;border-radius:999px;border:1px solid #dce6ff;font-size:12px}
-.action-row{display:flex;gap:10px;margin-top:12px}
-.button{background:#0b5fff;color:#fff;border:none;border-radius:10px;padding:10px 14px;cursor:pointer}
-.button.ghost{background:#fff;color:#0b5fff;border:1px solid #bcd0ff}
-.admin-bar{position:fixed;right:12px;bottom:64px;display:flex;flex-direction:column;gap:8px;background:#0b5fff;color:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
-.admin-bar .ghost{background:transparent;border:1px solid rgba(255,255,255,.6);color:#fff;border-radius:8px;padding:8px 10px;cursor:pointer}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:12px}
-.modal-content{background:#fff;border-radius:12px;min-width:320px;max-width:680px;width:100%;padding:0;overflow:hidden}
-.modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid #eef1f6}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:12px 14px;border-top:1px solid #eef1f6}
-.modal-content input,.modal-content textarea, .modal-content select{width:100%;padding:10px;border:1px solid #d9e0ee;border-radius:8px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
-.form-row.full{grid-template-columns:1fr}
-.info{font-size:12px;color:#5b6b91;margin-top:6px}
+/* 기본 */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Malgun Gothic, sans-serif;
+  background: #f7f9fc;
+  color: #0a0a0a;
+}
+
+/* 상단 배너 */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(90deg, #0044cc, #0066ff);
+  color: #fff;
+}
+
+.app-bar .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.app-bar .brand .logo {
+  height: 32px;
+  width: auto;
+}
+
+.search-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.search-wrap input {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.actions button {
+  background: #fff;
+  color: #0044cc;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.actions button:hover {
+  background: #eee;
+}
+
+/* 푸터 */
+.footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  font-size: 12px;
+  background: #eef3ff;
+  color: #3a4a7a;
+}
+.footer .sep { opacity: .5; }
+
+/* 컨테이너 */
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* 카드 그리드 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: #fff;
+  border: 1px solid #e6ebf5;
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(0,0,0,.02);
+}
+.card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,.08);
+  transform: translateY(-1px);
+  transition: .2s;
+}
+.card .title { font-weight: 700; margin-bottom: 6px; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff3ff;
+  color: #284cc8;
+  border: 1px solid #dce6ff;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 리스트 */
+.list { display: flex; flex-direction: column; gap: 10px; }
+.item {
+  background: #fff;
+  border: 1px solid #e6ebf5;
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+}
+.item .title { font-weight: 700; }
+.item .sub { font-size: 13px; color: #4b5a7a; margin-top: 4px; }
+
+/* 텍스트 */
+.page-title { font-size: 20px; font-weight: 800; margin: 6px 0 10px; }
+.breadcrumbs { font-size: 12px; color: #5b6b91; margin-bottom: 8px; }
+.kicker { font-size: 12px; color: #5b6b91; margin-bottom: 8px; }
+
+/* 태그 칩 */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+  background: #eef3ff;
+  color: #284cc8;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #dce6ff;
+  font-size: 12px;
+}
+
+/* 버튼 */
+.action-row { display: flex; gap: 10px; margin-top: 12px; }
+.button {
+  background: #0b5fff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.button.ghost {
+  background: #fff;
+  color: #0b5fff;
+  border: 1px solid #bcd0ff;
+}
+
+/* 관리자 바 */
+.admin-bar {
+  position: fixed;
+  right: 12px;
+  bottom: 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #0b5fff;
+  color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.2);
+}
+.admin-bar .ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.6);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+/* 모달 */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  min-width: 320px;
+  max-width: 680px;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef1f6;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 14px;
+  border-top: 1px solid #eef1f6;
+}
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d9e0ee;
+  border-radius: 8px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 8px 0;
+}
+.form-row.full { grid-template-columns: 1fr; }
+.info { font-size: 12px; color: #5b6b91; margin-top: 6px; }
+
+/* 숨김 */
+.hidden { display: none !important; }
