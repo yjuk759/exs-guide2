@@ -7,22 +7,17 @@ let state = {
   search: ''
 };
 
-// --- Utilities ---
+// --- 유틸 ---
 function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
 function byId(id){ return document.getElementById(id); }
-function navigate(page, params={}){
-  window.location.hash = page + (Object.keys(params).length ? ('?' + new URLSearchParams(params).toString()) : '');
-}
+function navigate(page, params={}){ window.location.hash = page + (Object.keys(params).length ? ('?' + new URLSearchParams(params).toString()) : ''); }
 function parseHash(){
   const h = window.location.hash.replace(/^#/, '') || 'home';
   const [page, query] = h.split('?');
   const params = Object.fromEntries(new URLSearchParams(query));
   return {page, params};
 }
-function onSearch(val){
-  state.search = (val||'').trim().toLowerCase();
-  render();
-}
+function onSearch(val){ state.search = (val||'').trim().toLowerCase(); render(); }
 function filterBySearch(list){
   if(!state.search) return list;
   return list.filter(x => ((x.title||'')+(x.summary||'')+(x.tags||'')).toLowerCase().includes(state.search));
@@ -37,38 +32,42 @@ function loadFromLocal(){
   if(c && m){ try { state.categories = JSON.parse(c); state.manuals = JSON.parse(m); } catch(e){} }
 }
 
-// --- Admin ---
+// --- 관리자 ---
 function enterAdmin(){
   const pass = prompt('관리자 비밀번호를 입력하세요 (임시: exsadmin)');
   if(pass === 'exsadmin'){
     state.admin = true;
-    byId('adminBar').classList.remove('hidden');
+    const bar = byId('adminBar');
+    if (bar) bar.classList.remove('hidden');
   } else {
     alert('비밀번호가 올바르지 않습니다.');
   }
 }
 function exitAdmin(){
   state.admin = false;
-  byId('adminBar').classList.add('hidden');
+  const bar = byId('adminBar');
+  if (bar) bar.classList.add('hidden');
 }
+
 function showAddCategory(){
   showModal('카테고리 추가', `
     <div class="form-row"><div><label>카테고리 ID</label><input id="cat_id" placeholder="CAT_OPS"></div>
     <div><label>정렬순서</label><input id="cat_order" type="number" placeholder="1"></div></div>
     <div class="form-row"><div><label>이름</label><input id="cat_name" placeholder="영업운영"></div>
-    <div><label>아이콘(이모지)</label><input id="cat_icon" placeholder="🧭"></div></div>
+    <div class="form-row"><div><label>아이콘(이모지)</label><input id="cat_icon" placeholder="🧭"></div></div>
     <div class="info">ID는 manuals의 category_id와 연결됩니다.</div>
   `, () => {
     const id = byId('cat_id').value.trim();
     const order = Number(byId('cat_order').value||0);
     const name = byId('cat_name').value.trim();
-    const icon = byId('cat_icon').value.trim() || '📄';
+    const icon = (byId('cat_icon')?.value.trim()) || '📄';
     if(!id || !name) return alert('ID와 이름은 필수입니다.');
     state.categories.push({id, name, order, icon});
     saveToLocal();
-    hideModal(); render();
+    render();
   });
 }
+
 function showAddManual(){
   const catOptions = state.categories.map(c => `<option value="${c.id}">${c.name} (${c.id})</option>`).join('');
   showModal('매뉴얼 추가', `
@@ -90,9 +89,10 @@ function showAddManual(){
     if(!id || !category_id || !title) return alert('ID, 카테고리, 제목은 필수입니다.');
     state.manuals.push({id, category_id, title, summary, content, tags, attachment_url});
     saveToLocal();
-    hideModal(); render();
+    render();
   });
 }
+
 function exportData(){
   const data = { categories: state.categories, manuals: state.manuals, exported_at: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
@@ -105,20 +105,51 @@ function exportData(){
   alert('manuals.json 파일이 다운로드되었습니다. 이 파일을 저장소에 덮어쓰면 즉시 반영됩니다.');
 }
 
-// --- Modal helpers ---
+// --- 모달 헬퍼(강화 버전) ---
 function showModal(title, bodyHTML, onSubmit){
-  byId('modalTitle').textContent = title;
-  byId('modalBody').innerHTML = bodyHTML;
+  const modal = byId('modal');
+  const body = byId('modalBody');
+  const titleEl = byId('modalTitle');
   const submit = byId('modalSubmit');
-  submit.onclick = onSubmit;
-  byId('modal').classList.remove('hidden');
+  if(!modal || !body || !titleEl || !submit){
+    console.warn('Modal DOM not found'); return;
+  }
+  titleEl.textContent = title || '입력';
+  body.innerHTML = bodyHTML || '';
+  // 확인 버튼: onSubmit 실행 후 항상 모달 닫기
+  submit.onclick = () => { try { onSubmit && onSubmit(); } finally { hideModal(); } };
+  // 표시
+  modal.classList.remove('hidden');
+  // 모달 레이아웃이 flex가 아닐 수도 있으니 강제 표시
+  modal.style.display = 'flex';
+  modal.removeAttribute('aria-hidden');
 }
-function hideModal(){ byId('modal').classList.add('hidden'); }
-function closeModal(e){ if(e.target.id==='modal'){ hideModal(); } }
 
-// --- Rendering ---
+function hideModal(){
+  // id="modal"이 있으면 우선 처리
+  const m = byId('modal');
+  if (m) {
+    m.classList.add('hidden');       // CSS 방식
+    m.style.display = 'none';        // 강제 숨김
+    m.setAttribute('aria-hidden', 'true');
+  }
+  // 혹시 다른 모달/오버레이가 남아있다면 전부 숨김
+  document.querySelectorAll('.modal').forEach(el => {
+    el.classList.add('hidden');
+    el.style.display = 'none';
+    el.setAttribute('aria-hidden', 'true');
+  });
+}
+
+function closeModal(e){
+  // 오버레이 클릭으로 닫기
+  if(e.target && e.target.id === 'modal'){ hideModal(); }
+}
+
+// --- 렌더링 ---
 function render(){
-  const root = byId('app'); root.innerHTML = '';
+  const root = byId('app'); if(!root) return;
+  root.innerHTML = '';
   const {page, params} = parseHash();
   if(page === 'home'){ renderHome(root); }
   else if(page === 'category'){ renderCategory(root, params.id); }
@@ -126,6 +157,7 @@ function render(){
   else if(page === 'about'){ renderAbout(root); }
   else { renderHome(root); }
 }
+
 function renderHome(root){
   const c = el('<div class="container"></div>');
   c.appendChild(el('<div class="page-title">카테고리</div>'));
@@ -143,13 +175,13 @@ function renderHome(root){
   c.appendChild(grid);
   root.appendChild(c);
 }
+
 function renderCategory(root, catId){
   const cat = state.categories.find(x=>x.id===catId);
   const c = el('<div class="container"></div>');
   c.appendChild(el(`<div class="breadcrumbs"><a href="#" onclick="navigate('home')">홈</a> · ${cat ? cat.name : catId}</div>`));
   c.appendChild(el(`<div class="page-title">${cat ? cat.name : catId}</div>`));
 
-  // Emergency first
   const manuals = state.manuals.filter(m=>m.category_id===catId);
   const withScore = filterBySearch(manuals).map(m => ({...m, emergency: (m.tags||'').includes('긴급')}));
   withScore.sort((a,b)=> (b.emergency?1:0) - (a.emergency?1:0) || (a.title||'').localeCompare(b.title||''));
@@ -168,6 +200,7 @@ function renderCategory(root, catId){
   c.appendChild(list);
   root.appendChild(c);
 }
+
 function renderManual(root, id){
   const m = state.manuals.find(x=>x.id===id);
   const cat = m ? state.categories.find(c=>c.id===m.category_id) : null;
@@ -191,6 +224,7 @@ function renderManual(root, id){
   }
   root.appendChild(c);
 }
+
 function renderAbout(root){
   const c = el('<div class="container"></div>');
   c.appendChild(el('<div class="page-title">앱 정보</div>'));
@@ -199,11 +233,10 @@ function renderAbout(root){
   root.appendChild(c);
 }
 
-// --- Boot ---
+// --- 부팅 ---
 async function boot(){
   loadFromLocal();
   try{
-    // Load bundled data if not present locally
     if(state.categories.length===0 || state.manuals.length===0){
       const res = await fetch('manuals.json?ts=' + Date.now());
       const data = await res.json();
@@ -214,5 +247,15 @@ async function boot(){
   }catch(e){ console.warn('manuals.json load failed', e); }
   render();
 }
+
+// 모달 바깥 클릭 시 닫기(보강)
+window.addEventListener('click', (e) => {
+  const m = byId('modal');
+  if (m && !m.classList.contains('hidden') && e.target === m) { hideModal(); }
+});
+
+// 해시 변경 → 라우팅
 window.addEventListener('hashchange', render);
+
+// 시작
 boot();
