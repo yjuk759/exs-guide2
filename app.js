@@ -7,7 +7,7 @@ let state = {
   search: ''
 };
 
-// --- 유틸 ---
+// ===== 유틸 =====
 function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
 function byId(id){ return document.getElementById(id); }
 function navigate(page, params={}){ window.location.hash = page + (Object.keys(params).length ? ('?' + new URLSearchParams(params).toString()) : ''); }
@@ -22,32 +22,46 @@ function filterBySearch(list){
   if(!state.search) return list;
   return list.filter(x => ((x.title||'')+(x.summary||'')+(x.tags||'')).toLowerCase().includes(state.search));
 }
-function saveToLocal(){
-  localStorage.setItem('exs_categories', JSON.stringify(state.categories));
-  localStorage.setItem('exs_manuals', JSON.stringify(state.manuals));
-}
-function loadFromLocal(){
-  const c = localStorage.getItem('exs_categories');
-  const m = localStorage.getItem('exs_manuals');
-  if(c){ try { state.categories = JSON.parse(c) || []; } catch(e){} }
-  if(m){ try { state.manuals = JSON.parse(m) || []; } catch(e){} }
+
+// ===== 저장 =====
+const LS_KEYS = {
+  cats: 'exs_categories',
+  mans: 'exs_manuals',
+  ver : 'exs_data_version' // manuals.json에 version 필드가 들어오면 비교
+};
+
+function saveToLocal(version=null){
+  localStorage.setItem(LS_KEYS.cats, JSON.stringify(state.categories));
+  localStorage.setItem(LS_KEYS.mans, JSON.stringify(state.manuals));
+  if (version !== null && version !== undefined) {
+    localStorage.setItem(LS_KEYS.ver, String(version));
+  }
 }
 
-// --- 관리자 ---
+function loadFromLocal(){
+  const c = localStorage.getItem(LS_KEYS.cats);
+  const m = localStorage.getItem(LS_KEYS.mans);
+  if(c){ try { state.categories = JSON.parse(c) || []; } catch(e){} }
+  if(m){ try { state.manuals   = JSON.parse(m) || []; } catch(e){} }
+}
+
+function getLocalVersion(){
+  return localStorage.getItem(LS_KEYS.ver);
+}
+
+// ===== 관리자 =====
 function enterAdmin(){
   const pass = prompt('관리자 비밀번호를 입력하세요 (임시: exsadmin)');
   if(pass === 'exsadmin'){
     state.admin = true;
-    const bar = byId('adminBar');
-    if (bar) bar.classList.remove('hidden');
+    byId('adminBar')?.classList.remove('hidden');
   } else {
     alert('비밀번호가 올바르지 않습니다.');
   }
 }
 function exitAdmin(){
   state.admin = false;
-  const bar = byId('adminBar');
-  if (bar) bar.classList.add('hidden');
+  byId('adminBar')?.classList.add('hidden');
 }
 
 function showAddCategory(){
@@ -64,13 +78,12 @@ function showAddCategory(){
     const icon = (byId('cat_icon')?.value.trim()) || '📄';
     if(!id || !name) return alert('ID와 이름은 필수입니다.');
     state.categories.push({id, name, order, icon});
-    saveToLocal();
+    saveToLocal(getLocalVersion());
     render();
   });
 }
 
 function showAddManual(){
-  // 드롭다운 표시는 이름만, 값은 ID (연결 용)
   const catOptions = state.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
   showModal('매뉴얼 추가', `
     <div class="form-row"><div><label>문서 ID</label><input id="m_id" placeholder="MNL_OPS_003"></div>
@@ -90,13 +103,14 @@ function showAddManual(){
     const attachment_url = byId('m_attach').value.trim();
     if(!id || !category_id || !title) return alert('ID, 카테고리, 제목은 필수입니다.');
     state.manuals.push({id, category_id, title, summary, content, tags, attachment_url});
-    saveToLocal();
+    saveToLocal(getLocalVersion());
     render();
   });
 }
 
 function exportData(){
-  const data = { categories: state.categories, manuals: state.manuals, exported_at: new Date().toISOString() };
+  const now = new Date().toISOString();
+  const data = { categories: state.categories, manuals: state.manuals, exported_at: now };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -107,7 +121,16 @@ function exportData(){
   alert('manuals.json 파일이 다운로드되었습니다. 이 파일을 저장소에 덮어쓰면 즉시 반영됩니다.');
 }
 
-// --- 모달 ---
+// (선택) 관리자에서 수동 초기화가 필요할 때 쓸 수 있는 버튼용
+function resetLocal(){
+  localStorage.removeItem(LS_KEYS.cats);
+  localStorage.removeItem(LS_KEYS.mans);
+  // 버전은 유지(서버와 비교를 위해)
+  alert('로컬 데이터 초기화 완료. 서버 데이터를 다시 불러옵니다.');
+  boot();
+}
+
+// ===== 모달 =====
 function showModal(title, bodyHTML, onSubmit){
   const modal = byId('modal');
   const body = byId('modalBody');
@@ -136,7 +159,7 @@ function hideModal(){
 }
 function closeModal(e){ if(e.target && e.target.id === 'modal'){ hideModal(); } }
 
-// --- 렌더링 ---
+// ===== 렌더링 =====
 function render(){
   const root = byId('app'); if(!root) return;
   root.innerHTML = '';
@@ -146,6 +169,10 @@ function render(){
   else if(page === 'manual'){ renderManual(root, params.id); }
   else if(page === 'about'){ renderAbout(root); }
   else { renderHome(root); }
+
+  // (선택) 디버그 카운트가 있으면 표시
+  const dbg = byId('dbgCounts');
+  if (dbg) dbg.textContent = `카테고리 ${state.categories.length} · 매뉴얼 ${state.manuals.length}`;
 }
 
 function renderHome(root){
@@ -213,11 +240,6 @@ function renderManual(root, id){
 
   if(m){
     const rt = el('<div></div>');
-    // URL 자동 링크(원하면 주석 해제)
-    // m.content.split('\n').forEach(line => {
-    //   const linked = line.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-    //   rt.appendChild(el('<p>'+linked.replace(/\s/g,'&nbsp;')+'</p>'));
-    // });
     m.content.split('\n').forEach(line => rt.appendChild(el('<p>'+line.replace(/\s/g,'&nbsp;')+'</p>')));
     c.appendChild(rt);
 
@@ -243,56 +265,58 @@ function renderAbout(root){
   root.appendChild(c);
 }
 
-// --- 부팅 (항상 서버에서 manuals.json 최신 읽어 덮어쓰기) ---
+// ===== 부팅 (서버 우선, 성공 시 로컬 덮어쓰기) =====
 async function boot(){
-  // 1) 우선 로컬 데이터로 바로 그려서 초기 공백 방지
+  // 0) 우선 빈화면 방지를 위해 로컬로 1차 렌더 (있으면)
   loadFromLocal();
+  render();
 
-  // 2) 서버에서 최신 manuals.json을 항상 한 번 가져와 덮어쓰기
+  // 1) 서버에서 항상 최신 manuals.json 가져오기 (캐시 무력화)
   try {
     const res = await fetch('manuals.json?ts=' + Date.now());
     if (res.ok) {
       const data = await res.json();
 
-      // 안전하게 덮어쓰기: 배열일 때만 반영
-      if (Array.isArray(data.categories)) {
-        state.categories = data.categories;
-      }
-      if (Array.isArray(data.manuals)) {
-        state.manuals = data.manuals;
-      }
-      saveToLocal(); // 다음 접속 시 빠르게 뜨도록 저장
+      // (선택) manuals.json에 version 필드가 있으면 비교해서 다르면 로컬 덮어쓰기
+      const remoteVersion = (data && (data.version ?? data.exported_at)) || null;
+      const localVersion  = getLocalVersion();
+
+      // 서버 데이터로 상태 갱신 (항상 서버 우선)
+      if (Array.isArray(data.categories)) state.categories = data.categories;
+      if (Array.isArray(data.manuals))    state.manuals    = data.manuals;
+
+      // 로컬 저장 + 버전 갱신
+      saveToLocal(remoteVersion ?? localVersion ?? null);
+
+      // 최신 데이터로 재렌더
+      render();
+    } else {
+      console.warn('manuals.json fetch status:', res.status);
     }
   } catch (e) {
     console.warn('manuals.json fetch failed', e);
   }
-
-  // 3) 렌더
-  render();
 }
 
-// 모달 바깥 클릭 시 닫기
+// ===== 이벤트/시작 =====
 window.addEventListener('click', (e) => {
   const m = byId('modal');
   if (m && !m.classList.contains('hidden') && e.target === m) { hideModal(); }
 });
-
-// 해시 변경 → 라우팅
 window.addEventListener('hashchange', render);
-
-// 시작
 boot();
 
-// --- 전역 바인딩 ---
-window.enterAdmin     = enterAdmin;
-window.exitAdmin      = exitAdmin;
-window.showAddCategory= showAddCategory;
-window.showAddManual  = showAddManual;
-window.exportData     = exportData;
+// ===== 전역 바인딩 =====
+window.enterAdmin      = enterAdmin;
+window.exitAdmin       = exitAdmin;
+window.showAddCategory = showAddCategory;
+window.showAddManual   = showAddManual;
+window.exportData      = exportData;
+window.resetLocal      = resetLocal; // 선택 사용
 
-window.showModal      = showModal;
-window.hideModal      = hideModal;
-window.closeModal     = closeModal;
+window.showModal = showModal;
+window.hideModal = hideModal;
+window.closeModal= closeModal;
 
-window.onSearch       = onSearch;
-window.navigate       = navigate;
+window.onSearch = onSearch;
+window.navigate = navigate;
