@@ -1,61 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EXS Guide</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
-  <meta name="theme-color" content="#0b5fff" />
+  <style>
+    /* 모달 숨김 처리 보강 */
+    .hidden {
+      display: none !important;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      min-width: 300px;
+    }
+  </style>
 </head>
 <body>
-  <header class="app-bar">
-    <div class="brand" onclick="navigate('home')">EXS Guide</div>
-    <div class="search-wrap">
-      <input id="searchInput" type="search" placeholder="검색: 통행권, 차단기, 화재..." oninput="onSearch(this.value)" />
-    </div>
-    <div class="actions">
-      <button id="adminToggleBtn" class="ghost" onclick="enterAdmin()">관리자</button>
-    </div>
+  <header>
+    <h1>EXS Guide</h1>
+    <button onclick="enterAdmin()">관리자</button>
   </header>
 
-  <main id="app"></main>
+  <main id="app">
+    <!-- 카테고리 / 매뉴얼 영역 -->
+  </main>
 
-  <footer class="footer">
-    <span>영업운영 · 민원응대 · 긴급상황</span>
-    <span class="sep">|</span>
-    <a href="#" onclick="navigate('about')">앱 정보</a>
-  </footer>
-
-  <!-- Admin toolbar -->
-  <div id="adminBar" class="admin-bar hidden">
-    <button onclick="showAddCategory()">카테고리 추가</button>
-    <button onclick="showAddManual()">매뉴얼 추가</button>
-    <button onclick="exportData()">데이터 내보내기(JSON)</button>
-    <button class="ghost" onclick="exitAdmin()">관리자 종료</button>
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="modal hidden" onclick="closeModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h3 id="modalTitle">입력</h3>
-        <button class="ghost" onclick="hideModal()">닫기</button>
-      </div>
-      <div id="modalBody"></div>
-      <div class="modal-actions">
-        <button id="modalSubmit" onclick="">확인</button>
+  <!-- 모달 -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="modalTitle">입력</h3>
+      <input id="modalInput" type="text" placeholder="내용 입력">
+      <div style="margin-top:10px; text-align:right;">
+        <button onclick="hideModal()">닫기</button>
+        <button onclick="confirmModal()">확인</button>
       </div>
     </div>
+  </div>
+
+  <!-- 관리자 바 -->
+  <div id="adminBar" class="hidden" style="position:fixed; bottom:20px; right:20px; background:#0044cc; color:white; padding:10px; border-radius:8px;">
+    <button onclick="showCategoryModal()">카테고리 추가</button>
+    <button onclick="showManualModal()">매뉴얼 추가</button>
+    <button onclick="exportData()">데이터 내보내기(JSON)</button>
+    <button onclick="exitAdmin()">관리자 종료</button>
   </div>
 
   <script src="app.js?v=2"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js');
-      });
-    }
-  </script>
 </body>
 </html>
