@@ -12,6 +12,18 @@
     document.write(`<link rel="stylesheet" href="styles.css?v=${ts}">`);
   </script>
 </head>
+  <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js?swv=' + Date.now())
+  .then(async (reg) => {
+    // 새 워커가 오면 곧바로 활성화 시도
+    if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+    if (reg.installing) reg.installing.addEventListener('statechange', () => {
+      if (reg.installing.state === 'installed') reg.installing.postMessage({type:'SKIP_WAITING'});
+    });
+  });
+}
+</script>
 <body>
   <!-- 상단 배너 -->
   <header class="app-bar">
