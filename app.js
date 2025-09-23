@@ -1,3 +1,4 @@
+// ===== 상태 =====
 let state = {
   categories: [],
   manuals: [],
@@ -28,7 +29,8 @@ function saveToLocal(){
 function loadFromLocal(){
   const c = localStorage.getItem('exs_categories');
   const m = localStorage.getItem('exs_manuals');
-  if(c && m){ try { state.categories = JSON.parse(c); state.manuals = JSON.parse(m); } catch(e){} }
+  if(c){ try { state.categories = JSON.parse(c) || []; } catch(e){} }
+  if(m){ try { state.manuals = JSON.parse(m) || []; } catch(e){} }
 }
 
 // --- 관리자 ---
@@ -68,7 +70,7 @@ function showAddCategory(){
 }
 
 function showAddManual(){
-  // 사용자 화면엔 ID 안 보이지만, 관리자 모드에서는 ID 필요 → 유지
+  // 드롭다운 표시는 이름만, 값은 ID (연결 용)
   const catOptions = state.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
   showModal('매뉴얼 추가', `
     <div class="form-row"><div><label>문서 ID</label><input id="m_id" placeholder="MNL_OPS_003"></div>
@@ -105,15 +107,13 @@ function exportData(){
   alert('manuals.json 파일이 다운로드되었습니다. 이 파일을 저장소에 덮어쓰면 즉시 반영됩니다.');
 }
 
-// --- 모달 헬퍼 ---
+// --- 모달 ---
 function showModal(title, bodyHTML, onSubmit){
   const modal = byId('modal');
   const body = byId('modalBody');
   const titleEl = byId('modalTitle');
   const submit = byId('modalSubmit');
-  if(!modal || !body || !titleEl || !submit){
-    console.warn('Modal DOM not found'); return;
-  }
+  if(!modal || !body || !titleEl || !submit){ console.warn('Modal DOM not found'); return; }
   titleEl.textContent = title || '입력';
   body.innerHTML = bodyHTML || '';
   submit.onclick = () => { try { onSubmit && onSubmit(); } finally { hideModal(); } };
@@ -121,7 +121,6 @@ function showModal(title, bodyHTML, onSubmit){
   modal.style.display = 'flex';
   modal.removeAttribute('aria-hidden');
 }
-
 function hideModal(){
   const m = byId('modal');
   if (m) {
@@ -135,10 +134,7 @@ function hideModal(){
     el.setAttribute('aria-hidden', 'true');
   });
 }
-
-function closeModal(e){
-  if(e.target && e.target.id === 'modal'){ hideModal(); }
-}
+function closeModal(e){ if(e.target && e.target.id === 'modal'){ hideModal(); } }
 
 // --- 렌더링 ---
 function render(){
@@ -182,15 +178,19 @@ function renderCategory(root, catId){
   withScore.sort((a,b)=> (b.emergency?1:0) - (a.emergency?1:0) || (a.title||'').localeCompare(b.title||''));
 
   const list = el('<div class="list"></div>');
-  withScore.forEach(m => {
-    const item = el(`<div class="item">
-      <div class="title">${m.title}</div>
-      <div class="sub">${m.summary||''}</div>
-      ${m.tags ? `<div class="chips">` + m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('') + `</div>` : ''}
-    </div>`);
-    item.onclick = ()=> navigate('manual', {id: m.id});
-    list.appendChild(item);
-  });
+  if (withScore.length === 0) {
+    list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>'));
+  } else {
+    withScore.forEach(m => {
+      const item = el(`<div class="item">
+        <div class="title">${m.title}</div>
+        <div class="sub">${m.summary||''}</div>
+        ${m.tags ? `<div class="chips">` + m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('') + `</div>` : ''}
+      </div>`);
+      item.onclick = ()=> navigate('manual', {id: m.id});
+      list.appendChild(item);
+    });
+  }
 
   c.appendChild(list);
   root.appendChild(c);
@@ -200,12 +200,27 @@ function renderManual(root, id){
   const m = state.manuals.find(x=>x.id===id);
   const cat = m ? state.categories.find(c=>c.id===m.category_id) : null;
   const c = el('<div class="container"></div>');
-  c.appendChild(el(`<div class="breadcrumbs"><a href="#" onclick="navigate('home')">홈</a> · <a href="#" onclick="navigate('category',{id:'${cat?cat.id:''}'})">${cat?cat.name:m?.category_id||''}</a></div>`));
+
+  // 빵부스러기: ID 절대 노출 안 함
+  c.appendChild(el(
+    `<div class="breadcrumbs">
+       <a href="#" onclick="navigate('home')">홈</a> · 
+       ${cat ? `<a href="#" onclick="navigate('category',{id:'${cat.id}'})">${cat.name}</a>` : '카테고리'}
+     </div>`
+  ));
+
   c.appendChild(el(`<div class="page-title">${m?m.title:'문서를 찾을 수 없습니다'}</div>`));
+
   if(m){
     const rt = el('<div></div>');
+    // URL 자동 링크(원하면 주석 해제)
+    // m.content.split('\n').forEach(line => {
+    //   const linked = line.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+    //   rt.appendChild(el('<p>'+linked.replace(/\s/g,'&nbsp;')+'</p>'));
+    // });
     m.content.split('\n').forEach(line => rt.appendChild(el('<p>'+line.replace(/\s/g,'&nbsp;')+'</p>')));
     c.appendChild(rt);
+
     const actions = el('<div class="action-row"></div>');
     if(m.attachment_url){
       const btn = el('<a class="button" target="_blank">첨부 열기</a>');
@@ -228,18 +243,31 @@ function renderAbout(root){
   root.appendChild(c);
 }
 
-// --- 부팅 ---
+// --- 부팅 (항상 서버에서 manuals.json 최신 읽어 덮어쓰기) ---
 async function boot(){
+  // 1) 우선 로컬 데이터로 바로 그려서 초기 공백 방지
   loadFromLocal();
-  try{
-    if(state.categories.length===0 || state.manuals.length===0){
-      const res = await fetch('manuals.json?ts=' + Date.now());
+
+  // 2) 서버에서 최신 manuals.json을 항상 한 번 가져와 덮어쓰기
+  try {
+    const res = await fetch('manuals.json?ts=' + Date.now());
+    if (res.ok) {
       const data = await res.json();
-      state.categories = data.categories || [];
-      state.manuals = data.manuals || [];
-      saveToLocal();
+
+      // 안전하게 덮어쓰기: 배열일 때만 반영
+      if (Array.isArray(data.categories)) {
+        state.categories = data.categories;
+      }
+      if (Array.isArray(data.manuals)) {
+        state.manuals = data.manuals;
+      }
+      saveToLocal(); // 다음 접속 시 빠르게 뜨도록 저장
     }
-  }catch(e){ console.warn('manuals.json load failed', e); }
+  } catch (e) {
+    console.warn('manuals.json fetch failed', e);
+  }
+
+  // 3) 렌더
   render();
 }
 
@@ -255,7 +283,7 @@ window.addEventListener('hashchange', render);
 // 시작
 boot();
 
-// 전역 바인딩
+// --- 전역 바인딩 ---
 window.enterAdmin     = enterAdmin;
 window.exitAdmin      = exitAdmin;
 window.showAddCategory= showAddCategory;
