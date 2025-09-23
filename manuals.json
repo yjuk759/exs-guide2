@@ -1,28 +1,10 @@
-"categories": [
-    {
-      "id": "CAT_OPS",
-      "name": "영업운영",
-      "order": 1,
-      "icon": "🧭"
-    },
-    {
-      "id": "CAT_CUST",
-      "name": "민원응대",
-      "order": 2,
-      "icon": "🗣️"
-    },
-    {
-      "id": "CAT_EMER",
-      "name": "긴급상황",
-      "order": 3,
-      "icon": "🚨"
-    },
-    {
-      "id": "CAT_EVA",
-      "name": "영업심사",
-      "order": 4,
-      "icon": "📄"
-    }
+{
+  "version": "2025-09-23-1",
+  "categories": [
+    { "id": "CAT_OPS",  "name": "영업운영", "order": 1, "icon": "🧭" },
+    { "id": "CAT_CUST", "name": "민원응대", "order": 2, "icon": "🗣️" },
+    { "id": "CAT_EMER", "name": "긴급상황", "order": 3, "icon": "🚨" },
+    { "id": "CAT_EVA",  "name": "영업심사", "order": 4, "icon": "📄" }
   ],
   "manuals": [
     {
@@ -80,7 +62,7 @@
       "attachment_url": ""
     },
     {
-      "id": "CAT_EMER_003",
+      "id": "MNL_EMR_003",
       "category_id": "CAT_EMER",
       "title": "정전시 대응방법",
       "summary": "영업소 정전 시 대응전략",
