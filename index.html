@@ -5,42 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EXS Guide</title>
   <link rel="manifest" href="manifest.json">
-  <!-- CSS 최신 로드 (캐시 무력화) -->
-  <link rel="stylesheet" href="styles.css?v=11">
-  <style>
-    .hidden { display: none !important; }
-    .modal {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      display: flex; justify-content: center; align-items: center; z-index: 1000;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      min-width: 320px;
-      max-width: 680px;
-      width: 90%;
-    }
-    .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-    .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
-  </style>
+
+  <!-- JS로 동적으로 CSS 최신 로드 -->
+  <script>
+    const ts = Date.now();
+    document.write(`<link rel="stylesheet" href="styles.css?v=${ts}">`);
+  </script>
 </head>
 <body>
   <!-- 상단 배너 -->
   <header class="app-bar">
-    <!-- 좌: 로고 -->
     <div class="brand" onclick="navigate('home')">
-      <img src="icons/logo.png?v=1" alt="기관 로고" class="logo">
+      <img src="icons/logo.png" alt="기관 로고" class="logo">
       <span>EXS Guide</span>
     </div>
-    <!-- 중: 검색창 -->
+
     <div class="search-wrap">
-    <input id="searchInput" type="search" placeholder="검색: 통행권, 민원, 화재..."
-         oninput="onSearch(this.value)"
-         onkeyup="if(event.key==='Enter'){ onSearch(this.value); }" />
-    <button class="search-btn" onclick="onSearch(document.getElementById('searchInput').value)">검색</button>
+      <input id="searchInput" type="search" placeholder="검색: 통행권, 민원, 화재..."
+        oninput="onSearch(this.value)"
+        onkeyup="if(event.key==='Enter'){ onSearch(this.value); }" />
+      <button class="search-btn" onclick="onSearch(document.getElementById('searchInput').value)">검색</button>
     </div>
-    <!-- 우: 관리자 버튼 -->
+
     <div class="actions">
       <button onclick="enterAdmin()">관리자</button>
     </div>
@@ -63,14 +49,17 @@
   </div>
 
   <!-- 관리자 바 -->
-  <div id="adminBar" class="hidden" style="position:fixed; bottom:20px; right:20px; background:#0044cc; color:#fff; padding:10px; border-radius:8px;">
+  <div id="adminBar" class="hidden" 
+       style="position:fixed; bottom:20px; right:20px; background:#0044cc; color:#fff; padding:10px; border-radius:8px;">
     <button onclick="showAddCategory()">카테고리 추가</button>
     <button onclick="showAddManual()">매뉴얼 추가</button>
     <button onclick="exportData()">데이터 내보내기(JSON)</button>
     <button onclick="exitAdmin()">관리자 종료</button>
   </div>
 
-  <!-- JS 최신 로드 (캐시 무력화) -->
-  <script src="app.js?v=11"></script>
+  <!-- JS 최신 로드 -->
+  <script>
+    document.write(`<script src="app.js?v=${Date.now()}"><\/script>`);
+  </script>
 </body>
 </html>
