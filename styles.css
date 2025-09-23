@@ -253,3 +253,64 @@ html, body {
 
 /* 숨김 */
 .hidden { display: none !important; }
+
+/* === Mobile tweaks === */
+@media (max-width: 600px) {
+  .app-bar {
+    flex-wrap: wrap;         /* 줄바꿈 허용 */
+    gap: 8px;
+    padding: 8px 12px;       /* 배너 여백 축소 */
+  }
+
+  .app-bar .brand {
+    font-size: 16px;         /* 텍스트 크기 축소 */
+    gap: 6px;
+  }
+
+  .app-bar .brand .logo {
+    height: 24px;            /* 로고 축소 (기본 32px → 24px) */
+  }
+
+  .actions button {
+    padding: 6px 10px;       /* 버튼 살짝 컴팩트 */
+    border-radius: 6px;
+    font-size: 13px;
+  }
+
+  /* 검색 영역을 한 줄 전체 차지하도록 */
+  .search-wrap {
+    order: 3;                /* brand(1), actions(2) 아래로 내려오게 */
+    flex: 1 1 100%;
+    padding: 0;
+    gap: 6px;
+  }
+
+  .search-wrap input {
+    flex: 1 1 auto;
+    width: 100% !important;  /* 가로 꽉 채우기 */
+    max-width: none;         /* 데스크톱용 최대폭 제한 해제 */
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .search-btn {
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    flex: 0 0 auto;          /* 버튼 고정 폭 */
+  }
+}
+
+/* 초소형 기기 추가 보정 */
+@media (max-width: 360px) {
+  .app-bar {
+    padding: 6px 10px;
+  }
+  .app-bar .brand {
+    font-size: 15px;
+  }
+  .app-bar .brand .logo {
+    height: 22px;
+  }
+}
