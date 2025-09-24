@@ -1,3 +1,16 @@
+// 로컬데이터만 초기화 스위치 (?clear=1)
+(() => {
+  try {
+    const u = new URL(location.href);
+    if (u.searchParams.get('clear') === '1') {
+      localStorage.removeItem('exs_categories');
+      localStorage.removeItem('exs_manuals');
+      // 새로고침(캐시버스터)
+      location.replace(location.origin + location.pathname + '?boot=' + Date.now());
+    }
+  } catch {}
+})();
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
