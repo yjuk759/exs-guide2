@@ -1,4 +1,5 @@
- "categories": [
+"version": "20250924-150716",
+  "categories": [
     {
       "id": "CAT_OPS",
       "name": "영업운영",
@@ -102,7 +103,16 @@
       "content": "열심히 일하장",
       "tags": "테스트",
       "attachment_url": "https://www.naver.com/"
+    },
+    {
+      "id": "MNL_TES_002",
+      "category_id": "CAT_TES",
+      "title": "테스트2",
+      "summary": "테스트",
+      "content": "가장~",
+      "tags": "테스트",
+      "attachment_url": "https://map.naver.com/p/"
     }
   ],
-  "exported_at": "2025-09-24T05:47:04.710Z"
+  "exported_at": "2025-09-24T06:07:16.346Z"
 }
