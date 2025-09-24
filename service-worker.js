@@ -1,5 +1,5 @@
 // service-worker.js
-const CACHE_NAME = 'exs-guide-v17'; // ← 숫자 반드시 올리기
+const CACHE_NAME = 'exs-guide-v18'; // ← 숫자 반드시 올리기
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
