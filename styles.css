@@ -35,6 +35,54 @@ html, body {
   height: 28px;
   width: auto;
 }
+/* ===== 모바일 전용 레이아웃 (PC 유지) ===== */
+@media (max-width: 640px) {
+  .app-bar {
+    display: flex;
+    flex-wrap: wrap;              /* 줄바꿈 허용 */
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+
+  /* 로고+타이틀 좌측, 관리자 버튼 우측 */
+  .brand {
+    order: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .brand .logo { height: 24px; }
+  .brand .app-title { font-size: 15px; white-space: nowrap; }
+
+  .actions { order: 1; }          /* 관리자 버튼을 같은 줄 오른쪽 */
+  .actions button {
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+
+  /* 검색줄을 다음 줄에 가득 채우기 */
+  .search-wrap {
+    order: 2;
+    flex: 1 1 100%;
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .search-wrap input {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .search-btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+}
+
 
 /* 검색창 */
 .search-wrap {
