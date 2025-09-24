@@ -35,6 +35,7 @@ html, body {
   height: 28px;
   width: auto;
 }
+
 /* ===== 모바일 전용 레이아웃 (PC 유지) ===== */
 @media (max-width: 640px) {
   .app-bar {
@@ -76,13 +77,13 @@ html, body {
     padding: 6px 8px;
     border-radius: 6px;
     font-size: 14px;
+    max-width: none; /* 모바일에서는 꽉 채우기 */
   }
   .search-btn {
     padding: 6px 10px;
     border-radius: 6px;
   }
 }
-
 
 /* 검색창 */
 .search-wrap {
