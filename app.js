@@ -50,7 +50,7 @@ function getLocalVersion(){
 }
 
 // ===== 관리자 =====
-// ▶ prompt() 대신 중앙 모달로 로그인 처리
+// ▶ 중앙 모달로 로그인 처리
 function enterAdmin(){
   showModal('관리자 로그인', `
     <div class="form-row full">
@@ -62,6 +62,7 @@ function enterAdmin(){
     if (pass === 'exsadmin'){
       state.admin = true;
       byId('adminBar')?.classList.remove('hidden');
+      render();
     } else {
       alert('비밀번호가 올바르지 않습니다.');
     }
@@ -73,9 +74,7 @@ function enterAdmin(){
     if (!inp) return;
     inp.focus();
     inp.addEventListener('keydown', (e)=>{
-      if (e.key === 'Enter') {
-        byId('modalSubmit')?.click();
-      }
+      if (e.key === 'Enter') byId('modalSubmit')?.click();
     });
   }, 0);
 }
@@ -83,14 +82,15 @@ function enterAdmin(){
 function exitAdmin(){
   state.admin = false;
   byId('adminBar')?.classList.add('hidden');
+  render();
 }
 
 function showAddCategory(){
   showModal('카테고리 추가', `
     <div class="form-row"><div><label>카테고리 ID</label><input id="cat_id" placeholder="CAT_OPS"></div>
     <div><label>정렬순서</label><input id="cat_order" type="number" placeholder="1"></div></div>
-    <div class="form-row"><div><label>이름</label><input id="cat_name" placeholder="영업운영"></div>
-    <div class="form-row"><div><label>아이콘(이모지)</label><input id="cat_icon" placeholder="🧭"></div></div>
+    <div class="form-row full"><div><label>이름</label><input id="cat_name" placeholder="영업운영"></div></div>
+    <div class="form-row full"><div><label>아이콘(이모지)</label><input id="cat_icon" placeholder="🧭"></div></div>
     <div class="info">ID는 manuals의 category_id와 연결됩니다.</div>
   `, () => {
     const id = byId('cat_id').value.trim();
@@ -129,41 +129,103 @@ function showAddManual(){
   });
 }
 
-function exportData(){
-  const now = new Date();
-  
-  // 사람이 보기 좋은 버전 문자열 (예: 20250924-153045)
-  const version = now.getFullYear().toString()
-    + String(now.getMonth() + 1).padStart(2, '0')
-    + String(now.getDate()).padStart(2, '0')
-    + '-' 
-    + String(now.getHours()).padStart(2, '0')
-    + String(now.getMinutes()).padStart(2, '0')
-    + String(now.getSeconds()).padStart(2, '0');
+// ===== 관리자: 수정 =====
+function showEditCategory(catId){
+  const cat = state.categories.find(c=>c.id===catId);
+  if(!cat) return alert('카테고리를 찾을 수 없습니다.');
 
-  const data = { 
-    version: version,                  // 새로 추가
-    categories: state.categories, 
-    manuals: state.manuals, 
-    exported_at: now.toISOString()     // 기존 ISO 형식도 유지
-  };
+  showModal('카테고리 수정', `
+    <div class="form-row"><div><label>카테고리 ID</label><input id="cat_id" value="${cat.id}"></div>
+    <div><label>정렬순서</label><input id="cat_order" type="number" value="${cat.order||0}"></div></div>
+    <div class="form-row full"><div><label>이름</label><input id="cat_name" value="${cat.name}"></div></div>
+    <div class="form-row full"><div><label>아이콘(이모지)</label><input id="cat_icon" value="${cat.icon||'📄'}"></div></div>
+    <div class="info">ID 변경 시 이 카테고리에 연결된 매뉴얼의 category_id도 함께 변경됩니다.</div>
+  `, () => {
+    const newId   = byId('cat_id').value.trim();
+    const newName = byId('cat_name').value.trim();
+    const newOrd  = Number(byId('cat_order').value||0);
+    const newIcon = byId('cat_icon').value.trim() || '📄';
+    if(!newId || !newName) return alert('ID와 이름은 필수입니다.');
 
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'manuals.json';
-  a.click();
-  URL.revokeObjectURL(url);
+    const oldId = cat.id;
 
-  alert('manuals.json 파일이 다운로드되었습니다. 이 파일을 저장소에 덮어쓰면 즉시 반영됩니다.');
+    // 카테고리 갱신
+    cat.id    = newId;
+    cat.name  = newName;
+    cat.order = newOrd;
+    cat.icon  = newIcon;
+
+    // ID 바뀌면 연결 매뉴얼의 category_id 변경
+    if (oldId !== newId) {
+      state.manuals.forEach(m => { if (m.category_id === oldId) m.category_id = newId; });
+    }
+
+    saveToLocal(getLocalVersion());
+    render();
+  });
+}
+
+function showEditManual(manualId){
+  const m = state.manuals.find(x=>x.id===manualId);
+  if(!m) return alert('매뉴얼을 찾을 수 없습니다.');
+
+  const catOptions = state.categories
+    .map(c => `<option value="${c.id}" ${c.id===m.category_id?'selected':''}>${c.name}</option>`)
+    .join('');
+
+  showModal('매뉴얼 수정', `
+    <div class="form-row"><div><label>문서 ID</label><input id="m_id" value="${m.id}"></div>
+    <div><label>카테고리</label><select id="m_cat">${catOptions}</select></div></div>
+    <div class="form-row full"><div><label>제목</label><input id="m_title" value="${m.title}"></div></div>
+    <div class="form-row full"><div><label>요약</label><input id="m_summary" value="${m.summary||''}"></div></div>
+    <div class="form-row full"><div><label>내용</label><textarea id="m_content" rows="6">${(m.content||'').replace(/</g,'&lt;')}</textarea></div></div>
+    <div class="form-row"><div><label>태그(콤마)</label><input id="m_tags" value="${m.tags||''}"></div>
+    <div><label>첨부 URL</label><input id="m_attach" value="${m.attachment_url||''}"></div></div>
+  `, () => {
+    const newId  = byId('m_id').value.trim();
+    const catId  = byId('m_cat').value;
+    const title  = byId('m_title').value.trim();
+    if(!newId || !catId || !title) return alert('ID/카테고리/제목은 필수입니다.');
+
+    m.id             = newId;
+    m.category_id    = catId;
+    m.title          = title;
+    m.summary        = byId('m_summary').value.trim();
+    m.content        = byId('m_content').value.trim();
+    m.tags           = byId('m_tags').value.trim();
+    m.attachment_url = byId('m_attach').value.trim();
+
+    saveToLocal(getLocalVersion());
+    navigate('manual', {id: m.id});
+    render();
+  });
+}
+
+// ===== 삭제 함수 =====
+function deleteCategory(catId) {
+  if (!confirm("이 카테고리를 삭제하시겠습니까? (관련 매뉴얼도 함께 삭제됩니다)")) return;
+  state.categories = state.categories.filter(c => c.id !== catId);
+  state.manuals = state.manuals.filter(m => m.category_id !== catId);
+  saveToLocal(getLocalVersion());
+  // 홈으로 이동
+  navigate('home');
+  render();
+}
+
+function deleteManual(manualId) {
+  if (!confirm("이 매뉴얼을 삭제하시겠습니까?")) return;
+  const m = state.manuals.find(x=>x.id===manualId);
+  state.manuals = state.manuals.filter(m => m.id !== manualId);
+  saveToLocal(getLocalVersion());
+  // 해당 카테고리 목록으로 이동
+  navigate('category', { id: m?.category_id || '' });
+  render();
 }
 
 // (선택) 관리자에서 수동 초기화가 필요할 때 쓸 수 있는 버튼용
 function resetLocal(){
   localStorage.removeItem(LS_KEYS.cats);
   localStorage.removeItem(LS_KEYS.mans);
-  // 버전은 유지(서버와 비교를 위해)
   alert('로컬 데이터 초기화 완료. 서버 데이터를 다시 불러옵니다.');
   boot();
 }
@@ -208,7 +270,6 @@ function render(){
   else if(page === 'about'){ renderAbout(root); }
   else { renderHome(root); }
 
-  // (선택) 디버그 카운트가 있으면 표시
   const dbg = byId('dbgCounts');
   if (dbg) dbg.textContent = `카테고리 ${state.categories.length} · 매뉴얼 ${state.manuals.length}`;
 }
@@ -225,7 +286,20 @@ function renderHome(root){
       <div class="title">${cat.name}</div>
       <div class="sub">${count}개 문서</div>
     </div>`);
+    // 카드 눌렀을 때 이동
     card.onclick = ()=> navigate('category', {id: cat.id});
+
+    // 관리자 미니버튼 (카드 클릭 막기 위해 stopPropagation)
+    if (state.admin) {
+      const adminRow = el(`<div class="admin-mini" style="margin-top:8px; display:flex; gap:6px;">
+        <button class="mini ghost">수정</button>
+        <button class="mini danger">삭제</button>
+      </div>`);
+      adminRow.children[0].onclick = (e)=>{ e.stopPropagation(); showEditCategory(cat.id); };
+      adminRow.children[1].onclick = (e)=>{ e.stopPropagation(); deleteCategory(cat.id); };
+      card.appendChild(adminRow);
+    }
+
     grid.appendChild(card);
   });
   c.appendChild(grid);
@@ -237,6 +311,17 @@ function renderCategory(root, catId){
   const c = el('<div class="container"></div>');
   c.appendChild(el(`<div class="breadcrumbs"><a href="#" onclick="navigate('home')">홈</a> · ${cat ? cat.name : ''}</div>`));
   c.appendChild(el(`<div class="page-title">${cat ? cat.name : '카테고리'}</div>`));
+
+  // 카테고리 헤더에도 관리자 버튼(선택)
+  if (state.admin && cat) {
+    const headerActions = el(`<div class="action-row" style="margin-bottom:10px;">
+      <button class="button ghost">카테고리 수정</button>
+      <button class="button danger">카테고리 삭제</button>
+    </div>`);
+    headerActions.children[0].onclick = ()=> showEditCategory(cat.id);
+    headerActions.children[1].onclick = ()=> deleteCategory(cat.id);
+    c.appendChild(headerActions);
+  }
 
   const manuals = state.manuals.filter(m=>m.category_id===catId);
   const withScore = filterBySearch(manuals).map(m => ({...m, emergency: (m.tags||'').includes('긴급')}));
@@ -253,6 +338,17 @@ function renderCategory(root, catId){
         ${m.tags ? `<div class="chips">` + m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('') + `</div>` : ''}
       </div>`);
       item.onclick = ()=> navigate('manual', {id: m.id});
+
+      if (state.admin) {
+        const adminRow = el(`<div class="admin-mini" style="margin-top:8px; display:flex; gap:6px;">
+          <button class="mini ghost">수정</button>
+          <button class="mini danger">삭제</button>
+        </div>`);
+        adminRow.children[0].onclick = (e)=>{ e.stopPropagation(); showEditManual(m.id); };
+        adminRow.children[1].onclick = (e)=>{ e.stopPropagation(); deleteManual(m.id); };
+        item.appendChild(adminRow);
+      }
+
       list.appendChild(item);
     });
   }
@@ -266,7 +362,6 @@ function renderManual(root, id){
   const cat = m ? state.categories.find(c=>c.id===m.category_id) : null;
   const c = el('<div class="container"></div>');
 
-  // 빵부스러기: ID 절대 노출 안 함
   c.appendChild(el(
     `<div class="breadcrumbs">
        <a href="#" onclick="navigate('home')">홈</a> · 
@@ -291,6 +386,17 @@ function renderManual(root, id){
     share.onclick = ()=> { navigator.clipboard.writeText(location.href); alert('문서 링크가 복사되었습니다.'); };
     actions.appendChild(share);
     c.appendChild(actions);
+
+    // 관리자 전용 수정/삭제
+    if (state.admin) {
+      const adminRow = el(`<div class="action-row">
+        <button class="button ghost">수정</button>
+        <button class="button danger">삭제</button>
+      </div>`);
+      adminRow.children[0].onclick = ()=> showEditManual(m.id);
+      adminRow.children[1].onclick = ()=> deleteManual(m.id);
+      c.appendChild(adminRow);
+    }
   }
   root.appendChild(c);
 }
@@ -305,28 +411,23 @@ function renderAbout(root){
 
 // ===== 부팅 (서버 우선, 성공 시 로컬 덮어쓰기) =====
 async function boot(){
-  // 0) 우선 빈화면 방지를 위해 로컬로 1차 렌더 (있으면)
+  // 0) 로컬 1차 렌더(있으면)
   loadFromLocal();
   render();
 
-  // 1) 서버에서 항상 최신 manuals.json 가져오기 (캐시 무력화)
+  // 1) 서버 최신 manuals.json (캐시 무력화)
   try {
     const res = await fetch('manuals.json?ts=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
 
-      // (선택) manuals.json에 version 필드가 있으면 비교해서 다르면 로컬 덮어쓰기
       const remoteVersion = (data && (data.version ?? data.exported_at)) || null;
       const localVersion  = getLocalVersion();
 
-      // 서버 데이터로 상태 갱신 (항상 서버 우선)
       if (Array.isArray(data.categories)) state.categories = data.categories;
       if (Array.isArray(data.manuals))    state.manuals    = data.manuals;
 
-      // 로컬 저장 + 버전 갱신
       saveToLocal(remoteVersion ?? localVersion ?? null);
-
-      // 최신 데이터로 재렌더
       render();
     } else {
       console.warn('manuals.json fetch status:', res.status);
@@ -350,7 +451,7 @@ window.exitAdmin       = exitAdmin;
 window.showAddCategory = showAddCategory;
 window.showAddManual   = showAddManual;
 window.exportData      = exportData;
-window.resetLocal      = resetLocal; // 선택 사용
+window.resetLocal      = resetLocal;
 
 window.showModal = showModal;
 window.hideModal = hideModal;
@@ -358,3 +459,9 @@ window.closeModal= closeModal;
 
 window.onSearch = onSearch;
 window.navigate = navigate;
+
+// 관리자용 편의: 전역 바인딩(수정/삭제)
+window.showEditCategory = showEditCategory;
+window.showEditManual   = showEditManual;
+window.deleteCategory   = deleteCategory;
+window.deleteManual     = deleteManual;
