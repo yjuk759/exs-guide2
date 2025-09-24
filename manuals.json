@@ -1,5 +1,5 @@
 {
-"version": "20250924-150716",
+  "version": "20250924-160603",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -113,7 +113,16 @@
       "content": "가장~",
       "tags": "테스트",
       "attachment_url": "https://map.naver.com/p/"
+    },
+    {
+      "id": "MNL_TES_003",
+      "category_id": "CAT_TES",
+      "title": "테스트3",
+      "summary": "제발",
+      "content": "마지막 가자~",
+      "tags": "테스트",
+      "attachment_url": "https://www.naver.com/"
     }
   ],
-  "exported_at": "2025-09-24T06:07:16.346Z"
+  "exported_at": "2025-09-24T07:06:03.374Z"
 }
