@@ -1,26 +1,3 @@
-// ---- 강제 리셋 핸들러 (?reset=1로 진입하면 SW/캐시/로컬 초기화) ----
-(function(){
-  try {
-    const url = new URL(location.href);
-    if (url.searchParams.get('reset') === '1') {
-      // 1) 서비스워커 해제
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
-      }
-      // 2) 캐시 비우기
-      if (window.caches) {
-        caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
-      }
-      // 3) 로컬 데이터 초기화 (카테고리/매뉴얼)
-      localStorage.removeItem('exs_categories');
-      localStorage.removeItem('exs_manuals');
-      // 4) 부트 파라미터로 강제 새로고침
-      const clean = location.origin + location.pathname + '?boot=' + Date.now();
-      location.replace(clean);
-    }
-  } catch(e){ /* noop */ }
-})();
-
 // ===== 상태 =====
 let state = {
   categories: [],
