@@ -17,14 +17,16 @@ function parseHash(){
   const params = Object.fromEntries(new URLSearchParams(query));
   return {page, params};
 }
-function onSearch(val){
-  state.search = (val||'').trim().toLowerCase();
+function onSearch(){
+  const val = byId('searchInput').value.trim().toLowerCase();
+  state.search = val;
   if (state.search) {
     navigate('search');
   } else {
     navigate('home');
   }
 }
+
 function filterBySearch(list){
   if(!state.search) return list;
   return list.filter(x => ((x.title||'')+(x.summary||'')+(x.tags||'')).toLowerCase().includes(state.search));
