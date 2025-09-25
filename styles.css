@@ -366,3 +366,19 @@ html, body {
   text-align:center;
   font-weight:700;
 }
+/* ====== 로고(SVG/IMG) 공통 크기 & 아우라 제거 - OVERRIDE ====== */
+.app-bar .brand .logo,
+.app-bar .brand svg {
+  height: 26px;   /* 필요하면 24~28px 사이로 조절 */
+  width: auto;
+  filter: none;   /* 기존 drop-shadow 아우라 제거 */
+}
+
+/* 모바일일 때 조금 더 작게 */
+@media (max-width: 640px) {
+  .app-bar .brand .logo,
+  .app-bar .brand svg {
+    height: 22px;
+    filter: none;
+  }
+}
