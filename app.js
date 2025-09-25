@@ -17,6 +17,7 @@ function parseHash(){
   const params = Object.fromEntries(new URLSearchParams(query));
   return {page, params};
 }
+
 function onSearch(){
   const val = byId('searchInput').value.trim().toLowerCase();
   state.search = val;
