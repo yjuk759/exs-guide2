@@ -44,9 +44,8 @@ if ('serviceWorker' in navigator) {
 
     <div class="search-wrap">
       <input id="searchInput" type="search" placeholder="검색: 통행권, 민원, 화재..."
-        oninput="onSearch(this.value)"
-        onkeyup="if(event.key==='Enter'){ onSearch(this.value); }" />
-      <button class="search-btn" onclick="onSearch(document.getElementById('searchInput').value)">검색</button>
+         onkeydown="if(event.key==='Enter'){ onSearch(); }" />
+        <button class="search-btn" onclick="onSearch()">검색</button>
     </div>
 
     <div class="actions">
