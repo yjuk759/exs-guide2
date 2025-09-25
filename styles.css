@@ -31,67 +31,47 @@ html, body {
   font-size: 16px;
 }
 
-.app-bar .brand .logo {
+/* 로고: 아우라(드롭쉐도) 제거하고 공통 크기 지정 */
+.app-bar .brand .logo,
+.app-bar .brand svg {
   height: 28px;
   width: auto;
-
-  /* ✅ 로고 모양을 따라가는 흰색 아우라 효과 */
-  filter: drop-shadow(0 0 2px white)
-          drop-shadow(0 0 4px white);
+  filter: none; /* 아우라 제거 */
 }
 
 /* ===== 모바일 전용 레이아웃 (PC 유지) ===== */
 @media (max-width: 640px) {
   .app-bar {
-    display: flex;
-    flex-wrap: wrap;              /* 줄바꿈 허용 */
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;      /* 로고 | 여유 | 관리자 */
+    grid-template-areas:
+      "brand . actions"
+      "search search search";
     align-items: center;
-    justify-content: space-between;
     gap: 8px;
     padding: 8px 12px;
   }
 
-  /* 로고+타이틀 좌측, 관리자 버튼 우측 */
-  .brand {
-    order: 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .brand .logo { 
-    height: 24px; 
-
-    /* ✅ 모바일에서도 동일 효과 */
-    filter: drop-shadow(0 0 2px white)
-            drop-shadow(0 0 4px white);
-  }
-  .brand .app-title { font-size: 15px; white-space: nowrap; }
-
-  .actions { order: 1; }          /* 관리자 버튼을 같은 줄 오른쪽 */
-  .actions button {
-    padding: 6px 10px;
-    border-radius: 6px;
-  }
-
-  /* 검색줄을 다음 줄에 가득 채우기 */
-  .search-wrap {
-    order: 2;
-    flex: 1 1 100%;
+  .app-bar .brand{ grid-area: brand; }
+  .app-bar .actions{ grid-area: actions; justify-self: end; }
+  .app-bar .search-wrap{
+    grid-area: search;
+    width: 100%;
+    padding-top: 6px;
     display: flex;
     gap: 6px;
-    margin-top: 6px;
   }
-  .search-wrap input {
-    flex: 1;
-    min-width: 0;
-    padding: 6px 8px;
-    border-radius: 6px;
-    font-size: 14px;
-    max-width: none; /* 모바일에서는 꽉 채우기 */
+
+  /* 모바일 로고 조금 작게 (아우라 없음) */
+  .app-bar .brand .logo,
+  .app-bar .brand svg {
+    height: 24px;
+    filter: none;
   }
-  .search-btn {
-    padding: 6px 10px;
-    border-radius: 6px;
+
+  .app-bar .brand .app-title{
+    font-size: 15px;
+    white-space: nowrap;
   }
 }
 
@@ -110,6 +90,7 @@ html, body {
   border: none;
   border-radius: 6px;
   font-size: 14px;
+  min-width: 0;           /* 줄어들 수 있게 */
 }
 .search-btn {
   background: #fff;
@@ -119,8 +100,26 @@ html, body {
   padding: 6px 10px;
   cursor: pointer;
   font-weight: bold;
+  white-space: nowrap;     /* 글자 줄바꿈 금지 */
+  flex-shrink: 0;          /* 버튼이 찌그러지지 않게 */
 }
 .search-btn:hover { background: #eee; }
+
+/* 모바일에서: 버튼 가로 유지 + 입력창 조금 양보 */
+@media (max-width: 640px) {
+  .app-bar .search-wrap input{
+    flex: 1 1 auto;
+    max-width: none;       /* 줄어들 공간 확보 */
+  }
+  .app-bar .search-btn{
+    padding: 6px 14px;     /* 버튼 폭 확보 */
+    border-radius: 6px;
+    white-space: nowrap;   /* 줄바꿈 금지 */
+    font-size: 14px;
+    min-width: 78px;       /* 최소 너비로 세로깨짐 방지 */
+    flex-shrink: 0;        /* 버튼 폭 유지 */
+  }
+}
 
 /* 관리자 버튼 */
 .actions button {
@@ -308,53 +307,7 @@ html, body {
 /* 숨김 */
 .hidden { display: none !important; }
 
-/* === 모바일에서 배너 2줄 고정: 로고+관리자 / 검색 === */
-@media (max-width: 640px) {
-  .app-bar{
-    display: grid !important;
-    grid-template-columns: auto 1fr auto;      /* 로고 | 여유 | 관리자 */
-    grid-template-areas:
-      "brand . actions"
-      "search search search";
-    align-items: center;
-    gap: 8px;
-  }
-
-  .app-bar .brand{ grid-area: brand; }
-  .app-bar .actions{ grid-area: actions; justify-self: end; }
-  .app-bar .search-wrap{
-    grid-area: search;
-    width: 100%;
-    padding-top: 6px;
-    display: flex;
-    gap: 6px;
-  }
-
-  /* 검색창은 모바일에서 가로 꽉 채우기 */
-  .app-bar .search-wrap input{
-    flex: 1 1 auto;
-    min-width: 0;
-    max-width: 100% !important;
-    padding: 6px 8px;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  .app-bar .search-btn{
-    padding: 6px 10px;
-    border-radius: 6px;
-  }
-
-  /* 로고/타이틀 크기 살짝 다운 */
-  .app-bar .brand .logo{ 
-    height: 24px; 
-
-    /* ✅ 모바일에서도 아우라 효과 */
-    filter: drop-shadow(0 0 2px white)
-            drop-shadow(0 0 4px white);
-  }
-  .app-bar .brand .app-title{ font-size: 15px; white-space: nowrap; }
-}
-
+/* 검색 결과 없음 박스 */
 .empty-box{
   background:#fff;
   border:1px solid #e6ebf5;
@@ -365,20 +318,4 @@ html, body {
   color:#4b5a7a;
   text-align:center;
   font-weight:700;
-}
-/* ====== 로고(SVG/IMG) 공통 크기 & 아우라 제거 - OVERRIDE ====== */
-.app-bar .brand .logo,
-.app-bar .brand svg {
-  height: 28px;   /* 필요하면 24~28px 사이로 조절 */
-  width: auto;
-  filter: none;   /* 기존 drop-shadow 아우라 제거 */
-}
-
-/* 모바일일 때 조금 더 작게 */
-@media (max-width: 640px) {
-  .app-bar .brand .logo,
-  .app-bar .brand svg {
-    height: 24px;
-    filter: none;
-  }
 }
