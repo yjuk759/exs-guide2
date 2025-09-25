@@ -408,3 +408,22 @@ window.showModal=showModal; window.hideModal=hideModal; window.closeModal=closeM
 window.onSearch=onSearch; window.navigate=navigate;
 window.showEditCategory=showEditCategory; window.showEditManual=showEditManual;
 window.deleteCategory=deleteCategory; window.deleteManual=deleteManual;
+
+// ===== 오프라인 감지 =====
+function updateOnlineStatus() {
+  const overlay = document.getElementById('offline-overlay');
+  if (!overlay) return; // 혹시 없을 경우 방어
+
+  if (navigator.onLine) {
+    overlay.classList.add('hidden');
+  } else {
+    overlay.classList.remove('hidden');
+  }
+}
+
+// 최초 실행
+updateOnlineStatus();
+
+// 이벤트 등록
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
