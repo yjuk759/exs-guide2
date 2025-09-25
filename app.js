@@ -20,8 +20,15 @@ function parseHash(){
 function onSearch(){
   const val = byId('searchInput').value.trim().toLowerCase();
   state.search = val;
+
   if (state.search) {
-    navigate('search');
+    const {page} = parseHash();
+    if (page === 'search') {
+      // 이미 검색 페이지라면 다시 그리기
+      render();
+    } else {
+      navigate('search');
+    }
   } else {
     navigate('home');
   }
