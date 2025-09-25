@@ -5,6 +5,7 @@ let state = {
   admin: false,
   adminPassHash: null,
   search: ''
+  offline: !navigator.onLine,
 };
 
 // ===== 유틸 =====
@@ -257,6 +258,22 @@ function closeModal(e){ if(e.target&&e.target.id==='modal'){ hideModal(); } }
 function render(){
   const root = byId('app'); if(!root) return;
   root.innerHTML='';
+  if (state.offline) {
+    root.appendChild(el(`
+      <div class="container">
+        <div class="empty-box">
+          <div style="font-size:20px; font-weight:800; margin-bottom:6px;">
+            인터넷 연결이 필요합니다
+          </div>
+          <div style="color:#5b6b91; font-size:14px;">
+            네트워크가 끊겼습니다. 연결 후 다시 시도하세요.
+          </div>
+        </div>
+      </div>
+    `));
+    const dbg=byId('dbgCounts'); if(dbg) dbg.textContent='오프라인';
+    return;
+  }
   const {page, params}=parseHash();
   if(page==='home'){ renderHome(root); }
   else if(page==='category'){ renderCategory(root, params.id); }
