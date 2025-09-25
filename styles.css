@@ -34,6 +34,10 @@ html, body {
 .app-bar .brand .logo {
   height: 28px;
   width: auto;
+
+  /* ✅ 로고 모양을 따라가는 흰색 아우라 효과 */
+  filter: drop-shadow(0 0 2px white)
+          drop-shadow(0 0 4px white);
 }
 
 /* ===== 모바일 전용 레이아웃 (PC 유지) ===== */
@@ -54,7 +58,13 @@ html, body {
     align-items: center;
     gap: 6px;
   }
-  .brand .logo { height: 24px; }
+  .brand .logo { 
+    height: 24px; 
+
+    /* ✅ 모바일에서도 동일 효과 */
+    filter: drop-shadow(0 0 2px white)
+            drop-shadow(0 0 4px white);
+  }
   .brand .app-title { font-size: 15px; white-space: nowrap; }
 
   .actions { order: 1; }          /* 관리자 버튼을 같은 줄 오른쪽 */
@@ -335,7 +345,13 @@ html, body {
   }
 
   /* 로고/타이틀 크기 살짝 다운 */
-  .app-bar .brand .logo{ height: 24px; }
+  .app-bar .brand .logo{ 
+    height: 24px; 
+
+    /* ✅ 모바일에서도 아우라 효과 */
+    filter: drop-shadow(0 0 2px white)
+            drop-shadow(0 0 4px white);
+  }
   .app-bar .brand .app-title{ font-size: 15px; white-space: nowrap; }
 }
 
