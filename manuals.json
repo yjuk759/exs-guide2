@@ -1,5 +1,5 @@
 {
-  "version": "20250924-160603",
+  "version": "20250925-091300",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -20,14 +20,8 @@
       "icon": "🚨"
     },
     {
-      "id": "CAT_EVA",
-      "name": "영업심사",
-      "order": 4,
-      "icon": "📄"
-    },
-    {
       "id": "CAT_TES",
-      "name": "테스트용",
+      "name": "테스트용2",
       "order": 0,
       "icon": "📌"
     }
@@ -109,20 +103,11 @@
       "id": "MNL_TES_002",
       "category_id": "CAT_TES",
       "title": "테스트2",
-      "summary": "테스트",
-      "content": "가장~",
-      "tags": "테스트",
-      "attachment_url": "https://map.naver.com/p/"
-    },
-    {
-      "id": "MNL_TES_003",
-      "category_id": "CAT_TES",
-      "title": "테스트3",
-      "summary": "제발",
-      "content": "마지막 가자~",
-      "tags": "테스트",
-      "attachment_url": "https://www.naver.com/"
+      "summary": "테스트2",
+      "content": "드가장~",
+      "tags": "테스트2, 제발",
+      "attachment_url": "https://naver.com/"
     }
   ],
-  "exported_at": "2025-09-24T07:06:03.374Z"
+  "exported_at": "2025-09-25T00:13:00.121Z"
 }
