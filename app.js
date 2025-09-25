@@ -269,22 +269,39 @@ function render(){
 }
 
 function renderHome(root){
-  const c=el('<div class="container"></div>');
+  // 홈으로 올 때 검색 상태 초기화
+  state.search = '';
+  const input = byId('searchInput');
+  if (input) input.value = '';
+
+  const c = el('<div class="container"></div>');
   c.appendChild(el('<div class="page-title">카테고리</div>'));
-  const grid=el('<div class="grid"></div>');
+  const grid = el('<div class="grid"></div>');
   [...state.categories].sort((a,b)=>(a.order||0)-(b.order||0)).forEach(cat=>{
-    const count=state.manuals.filter(m=>m.category_id===cat.id).length;
-    const card=el(`<div class="card"><div class="badge">${cat.icon||'📁'}</div><div class="title">${cat.name}</div><div class="sub">${count}개 문서</div></div>`);
-    card.onclick=()=>navigate('category',{id:cat.id});
+    const count = state.manuals.filter(m=>m.category_id===cat.id).length;
+    const card = el(`
+      <div class="card">
+        <div class="badge">${cat.icon||'📁'}</div>
+        <div class="title">${cat.name}</div>
+        <div class="sub">${count}개 문서</div>
+      </div>`);
+    card.onclick = ()=>navigate('category',{id:cat.id});
+
     if(state.admin){
-      const adminRow=el(`<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"><button class="mini ghost">수정</button><button class="mini danger">삭제</button></div>`);
-      adminRow.children[0].onclick=(e)=>{e.stopPropagation();showEditCategory(cat.id);};
-      adminRow.children[1].onclick=(e)=>{e.stopPropagation();deleteCategory(cat.id);};
+      const adminRow = el(`
+        <div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;">
+          <button class="mini ghost">수정</button>
+          <button class="mini danger">삭제</button>
+        </div>`);
+      adminRow.children[0].onclick = (e)=>{ e.stopPropagation(); showEditCategory(cat.id); };
+      adminRow.children[1].onclick = (e)=>{ e.stopPropagation(); deleteCategory(cat.id); };
       card.appendChild(adminRow);
     }
+
     grid.appendChild(card);
   });
-  c.appendChild(grid); root.appendChild(c);
+  c.appendChild(grid);
+  root.appendChild(c);
 }
 
 function renderCategory(root,catId){
