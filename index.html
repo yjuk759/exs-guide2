@@ -42,7 +42,7 @@ if ('serviceWorker' in navigator) {
   <defs>
     <!-- 하얀 테두리: radius 값으로 두께 조절 (1~2 추천) -->
     <filter id="whiteOutline">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="spread"/>
+      <feMorphology in="SourceAlpha" operator="dilate" radius="0.8" result="spread"/>
       <feFlood flood-color="#ffffff" result="white"/>
       <feComposite in="white" in2="spread" operator="in" result="outline"/>
       <feMerge>
