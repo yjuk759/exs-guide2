@@ -222,6 +222,36 @@ function deleteManual(manualId) {
   render();
 }
 
+function exportData(){
+  const now = new Date();
+  
+  // 사람이 보기 좋은 버전 문자열 (예: 20250924-153045)
+  const version = now.getFullYear().toString()
+    + String(now.getMonth() + 1).padStart(2, '0')
+    + String(now.getDate()).padStart(2, '0')
+    + '-' 
+    + String(now.getHours()).padStart(2, '0')
+    + String(now.getMinutes()).padStart(2, '0')
+    + String(now.getSeconds()).padStart(2, '0');
+
+  const data = { 
+    version: version,                  // 새로 추가
+    categories: state.categories, 
+    manuals: state.manuals, 
+    exported_at: now.toISOString()     // 기존 ISO 형식도 유지
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'manuals.json';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  alert('manuals.json 파일이 다운로드되었습니다. 이 파일을 저장소에 덮어쓰면 즉시 반영됩니다.');
+}
+
 // (선택) 관리자에서 수동 초기화가 필요할 때 쓸 수 있는 버튼용
 function resetLocal(){
   localStorage.removeItem(LS_KEYS.cats);
