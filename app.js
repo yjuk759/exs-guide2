@@ -401,31 +401,22 @@ function renderSearch(root){
 
 // ===== 부팅 =====
 async function boot(){
-  // 오프라인이면 안내만
-  if (!navigator.onLine) {
-    state.offline = true;
-    render();
-    return;
-  }
-
-  // 온라인: 서버에서만 로드
-  try {
-    const res = await fetch('manuals.json?ts=' + Date.now(), { cache: 'no-store' });
-    if (res.ok) {
-      const data = await res.json();
-      state.categories = Array.isArray(data.categories) ? data.categories : [];
-      state.manuals    = Array.isArray(data.manuals)    ? data.manuals    : [];
-    } else {
-      console.warn('manuals.json fetch status:', res.status);
+  loadFromLocal(); render();
+  try{
+    const res=await fetch('manuals.json?ts='+Date.now(),{cache:'no-store'});
+    if(res.ok){
+      const data=await res.json();
+      const remoteVersion=(data&&(data.version??data.exported_at))||null;
+      const localVersion=getLocalVersion();
+      if(Array.isArray(data.categories)) state.categories=data.categories;
+      if(Array.isArray(data.manuals)) state.manuals=data.manuals;
+      saveToLocal(remoteVersion??localVersion??null);
+      render();
     }
-  } catch (e) {
-    console.warn('manuals.json fetch failed', e);
+  }catch(e){
+    console.warn('manuals.json fetch failed',e);
   }
-
-  state.offline = false;
-  render();
 }
-
 // ===== 이벤트/시작 =====
 window.addEventListener('click',(e)=>{ const m=byId('modal'); if(m&&!m.classList.contains('hidden')&&e.target===m){ hideModal(); } });
 window.addEventListener('hashchange',render);
