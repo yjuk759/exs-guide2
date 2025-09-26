@@ -4,7 +4,7 @@
 // - 정적 파일: 캐시 우선 + 없으면 네트워크
 // - 설치/활성화 시 이전 캐시 정리
 
-const CACHE_NAME = 'exs-guide-v52'; // ← 배포할 때마다 숫자 올리기
+const CACHE_NAME = 'exs-guide-v53'; // ← 배포할 때마다 숫자 올리기
 
 // 초기 프리캐시(오프라인 첫 화면용). manuals.json은 의도적으로 제외.
 const PRECACHE_ASSETS = [
