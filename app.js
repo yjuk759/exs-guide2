@@ -5,7 +5,6 @@ let state = {
   admin: false,
   adminPassHash: null,
   search: ''
-  offline: !navigator.onLine,
 };
 
 // ===== 유틸 =====
