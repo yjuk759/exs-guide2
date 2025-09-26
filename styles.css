@@ -357,3 +357,8 @@ input, textarea, [contenteditable="true"] {
   user-select: text;
   -webkit-touch-callout: default;
 }
+
+input[type="file"]::file-selector-button {
+  background: #1778b9; /* 배너색 */
+  color: #fff;         /* 글씨는 흰색 */
+}
