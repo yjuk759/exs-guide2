@@ -360,3 +360,19 @@ html, body {
   -webkit-tap-highlight-color: transparent; /* 탭 하이라이트 제거 */
   touch-action: manipulation;         /* 터치 제스처 단순화 */
 }
+/* 앱 전반: 텍스트 선택/롱프레스 검색 막기 */
+body, .app-bar, .container, .page-title, .breadcrumbs,
+.card, .item, .item .title, .badge, .chip {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;           /* 롱프레스 메뉴 비활성화 */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* 입력 가능 영역은 선택 허용 */
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
