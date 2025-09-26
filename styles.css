@@ -94,7 +94,7 @@ html, body {
 }
 .search-btn {
   background: #fff;
-  color: #0044cc;
+  color: #000;
   border: 1px solid #bcd0ff;
   border-radius: 6px;
   padding: 6px 10px;
@@ -124,7 +124,7 @@ html, body {
 /* 관리자 버튼 */
 .actions button {
   background: #fff;
-  color: #0044cc;
+  color: #000;
   border: none;
   border-radius: 6px;
   padding: 6px 10px;
