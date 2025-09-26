@@ -350,3 +350,13 @@ html, body {
   font-size: 14px;
   color: #444;
 }
+
+/* 헤더(로고+제목)에서 텍스트 선택/롱프레스 검색 막기 */
+.app-bar .brand,
+.app-bar .brand * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;        /* iOS/안드 공통 롱프레스 메뉴 비활성화 */
+  -webkit-tap-highlight-color: transparent; /* 탭 하이라이트 제거 */
+  touch-action: manipulation;         /* 터치 제스처 단순화 */
+}
