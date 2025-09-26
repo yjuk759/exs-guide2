@@ -404,19 +404,14 @@ async function boot(){
   loadFromLocal(); render();
   try{
     const res=await fetch('manuals.json?ts='+Date.now(),{cache:'no-store'});
-    if(res.ok){
-      const data=await res.json();
-      const remoteVersion=(data&&(data.version??data.exported_at))||null;
-      const localVersion=getLocalVersion();
+    if(res.ok){ const data=await res.json(); const remoteVersion=(data&&(data.version??data.exported_at))||null; const localVersion=getLocalVersion();
       if(Array.isArray(data.categories)) state.categories=data.categories;
       if(Array.isArray(data.manuals)) state.manuals=data.manuals;
-      saveToLocal(remoteVersion??localVersion??null);
-      render();
+      saveToLocal(remoteVersion??localVersion??null); render();
     }
-  }catch(e){
-    console.warn('manuals.json fetch failed',e);
-  }
+  }catch(e){ console.warn('manuals.json fetch failed',e); }
 }
+
 // ===== 이벤트/시작 =====
 window.addEventListener('click',(e)=>{ const m=byId('modal'); if(m&&!m.classList.contains('hidden')&&e.target===m){ hideModal(); } });
 window.addEventListener('hashchange',render);
@@ -431,30 +426,21 @@ window.onSearch=onSearch; window.navigate=navigate;
 window.showEditCategory=showEditCategory; window.showEditManual=showEditManual;
 window.deleteCategory=deleteCategory; window.deleteManual=deleteManual;
 
-// ===== 오프라인 감지 (교체) =====
-function updateOnlineStatus(force = false) {
-  const nowOnline = navigator.onLine;
+// ===== 오프라인 감지 =====
+function updateOnlineStatus() {
   const overlay = document.getElementById('offline-overlay');
+  if (!overlay) return; // 혹시 없을 경우 방어
 
-  // 상태에 반영(처음 쓰는 필드여도 JS에서 바로 추가해도 됨)
-  const prev = state.isOnline;
-  state.isOnline = nowOnline;
-
-  // 오버레이 표시/숨김
-  if (overlay) {
-    if (nowOnline) overlay.classList.add('hidden');
-    else overlay.classList.remove('hidden');
+  if (navigator.onLine) {
+    overlay.classList.add('hidden');
+  } else {
+    overlay.classList.remove('hidden');
   }
-
-  // 온라인/오프라인 상태가 바뀐 경우에만 리렌더
-  if (force || prev !== nowOnline) render();
 }
 
-// 최초 1회 강제 반영 + 렌더
-updateOnlineStatus(true);
+// 최초 실행
+updateOnlineStatus();
 
-// 이벤트 재등록(중복 방지용 방어 코드 포함)
-window.removeEventListener?.('online', updateOnlineStatus);
-window.removeEventListener?.('offline', updateOnlineStatus);
-window.addEventListener('online', () => updateOnlineStatus());
-window.addEventListener('offline', () => updateOnlineStatus());
+// 이벤트 등록
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
