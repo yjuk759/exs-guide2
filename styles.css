@@ -227,7 +227,7 @@ html, body {
 /* 버튼 */
 .action-row { display: flex; gap: 8px; margin-top: 10px; }
 .button {
-  background: #0b5fff;
+  background: #1778b9;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -356,9 +356,4 @@ input, textarea, [contenteditable="true"] {
   -webkit-user-select: text;
   user-select: text;
   -webkit-touch-callout: default;
-}
-
-input[type="file"]::file-selector-button {
-  background: #1778b9; /* 배너색 */
-  color: #fff;         /* 글씨는 흰색 */
 }
