@@ -114,6 +114,7 @@ html, body {
   justify-content: center;
   padding: 0;
   cursor: pointer;
+  color: #1778b9;
 }
 
 .search-icon-btn svg { width: 18px; height: 18px; }
