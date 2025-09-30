@@ -1,5 +1,5 @@
 {
-  "version": "20250925-092623",
+  "version": "20251001-085811",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -107,7 +107,16 @@
       "content": "드가장~",
       "tags": "테스트2, 제발",
       "attachment_url": "https://drive.google.com/file/d/1D592dBGRrBSxQ5Tsj5AUaffsRvFXbvNm/view?usp=sharing"
+    },
+    {
+      "id": "MNL_OPS_003",
+      "category_id": "CAT_OPS",
+      "title": "전자카드 충전 방법",
+      "summary": "전자카드 충전 방법",
+      "content": "",
+      "tags": "전자카드, 충전",
+      "attachment_url": "https://www.canva.com/design/DAG0f0OUGes/qfOSBUjDAJb_qU7cRCqebQ/edit?utm_content=DAG0f0OUGes&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
     }
   ],
-  "exported_at": "2025-09-25T00:26:23.655Z"
+  "exported_at": "2025-09-30T23:58:11.197Z"
 }
