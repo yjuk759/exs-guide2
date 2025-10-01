@@ -1,5 +1,5 @@
 {
-  "version": "20251001-101952",
+  "version": "20251001-113128",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -27,24 +27,6 @@
     }
   ],
   "manuals": [
-    {
-      "id": "MNL_OPS_001",
-      "category_id": "CAT_OPS",
-      "title": "현금통행 처리 절차",
-      "summary": "현금 결제, 영수증 발급, 회수·정산",
-      "content": "1) 차종 확인 → 2) 통행료 산정 → 3) 영수증 발급 → 4) 마감 정산.\n유의: 위반차량 의심 시 CCTV 확인 및 상급자 보고.",
-      "tags": "정산, 현금, 영수증",
-      "attachment_url": ""
-    },
-    {
-      "id": "MNL_OPS_002",
-      "category_id": "CAT_OPS",
-      "title": "무인요금소 점검 체크리스트",
-      "summary": "개시/마감 점검 항목",
-      "content": "개시: 전원·네트워크·차단기·영수증 용지 확인.\n마감: 수납 금액 대조, CCTV 기록 보관.",
-      "tags": "무인, 점검, 차단기",
-      "attachment_url": "https://drive.google.com/file/d/1dt9LqY5A4515m96EJpdE2Gntsu7f8kBx/view?usp=sharing"
-    },
     {
       "id": "MNL_CUST_001",
       "category_id": "CAT_CUST",
@@ -125,7 +107,16 @@
       "content": "첨부확인",
       "tags": "전자카드, 충전, 취소",
       "attachment_url": "https://www.canva.com/design/DAG0gG3xaVI/lFx4j0VaCxOTEc_pnOil1w/watch?utm_content=DAG0gG3xaVI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h45190c40e6"
+    },
+    {
+      "id": "MNL_OPS_005",
+      "category_id": "CAT_OPS",
+      "title": "하자카드 처리 및 재발급 방법",
+      "summary": "하자카드 처리절차 및 재발급 절차",
+      "content": "첨부확인",
+      "tags": "하자카드, 재발급",
+      "attachment_url": "https://www.canva.com/design/DAG0gRJFkMU/1qDlIhSLHZjoG46I391o-Q/watch?utm_content=DAG0gRJFkMU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h3f50a7891b"
     }
   ],
-  "exported_at": "2025-10-01T01:19:52.642Z"
+  "exported_at": "2025-10-01T02:31:28.303Z"
 }
