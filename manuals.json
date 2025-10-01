@@ -1,5 +1,5 @@
 {
-  "version": "20251001-085811",
+  "version": "20251001-101952",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -111,12 +111,21 @@
     {
       "id": "MNL_OPS_003",
       "category_id": "CAT_OPS",
-      "title": "전자카드 충전 방법",
-      "summary": "전자카드 충전 방법",
+      "title": "전자카드 충전",
+      "summary": "전자카드 충전 절차",
       "content": "",
       "tags": "전자카드, 충전",
-      "attachment_url": "https://www.canva.com/design/DAG0f0OUGes/B_RAcmKYnt_KDY66_8piMg/watch?utm_content=DAG0f0OUGes&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha564c19aa7"
+      "attachment_url": "https://www.canva.com/design/DAG0f0OUGes/qfOSBUjDAJb_qU7cRCqebQ/edit?utm_content=DAG0f0OUGes&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
+    },
+    {
+      "id": "MNL_OPS_004",
+      "category_id": "CAT_OPS",
+      "title": "전자카드 충전 취소",
+      "summary": "전자카드 충전 취소 절차",
+      "content": "첨부확인",
+      "tags": "전자카드, 충전, 취소",
+      "attachment_url": "https://www.canva.com/design/DAG0gG3xaVI/lFx4j0VaCxOTEc_pnOil1w/watch?utm_content=DAG0gG3xaVI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h45190c40e6"
     }
   ],
-  "exported_at": "2025-09-30T23:58:11.197Z"
+  "exported_at": "2025-10-01T01:19:52.642Z"
 }
