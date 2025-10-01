@@ -322,7 +322,14 @@ function renderCategory(root,catId){
   if(withScore.length===0){ list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>')); }
   else withScore.forEach(m=>{
     const item=el(`<div class="item"><div class="title">${m.title}</div><div class="sub">${m.summary||''}</div>${m.tags?`<div class="chips">`+m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('')+`</div>`:''}</div>`);
-    item.onclick=()=>navigate('manual',{id:m.id});
+    item.onclick = () => {
+  const url = (m.attachment_url || "").trim();
+  if (url) {
+     window.open(url, "_blank");
+     } else {
+     navigate('manual', { id: m.id });
+     }
+   };
     if(state.admin){
       const adminRow=el(`<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"><button class="mini ghost">수정</button><button class="mini danger">삭제</button></div>`);
       adminRow.children[0].onclick=(e)=>{e.stopPropagation();showEditManual(m.id);};
@@ -370,7 +377,14 @@ function renderSearch(root){
     const cat=state.categories.find(ca=>ca.id===m.category_id);
     const catBadge=cat?`${cat.icon||'📁'} ${cat.name}`:(m.category_id||'');
     const item=el(`<div class="item"><div class="title">${m.title}</div><div class="sub">${m.summary||''}</div><div class="chips" style="margin-top:6px;"><span class="chip">${catBadge}</span>${m.tags?m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join(''):''}</div></div>`);
-    item.onclick=()=>navigate('manual',{id:m.id});
+    item.onclick = () => {
+     const url = (m.attachment_url || "").trim();
+     if (url) {
+        window.open(url, "_blank");
+      } else {
+        navigate('manual', { id: m.id });
+      }
+    };
     if(state.admin){
       const adminRow=el(`<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"><button class="mini ghost">수정</button><button class="mini danger">삭제</button></div>`);
       adminRow.children[0].onclick=(e)=>{e.stopPropagation();showEditManual(m.id);};
