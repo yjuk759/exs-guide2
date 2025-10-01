@@ -1,5 +1,5 @@
 {
-  "version": "20251001-154409",
+  "version": "20251001-164136",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -112,7 +112,7 @@
       "id": "MNL_OPS_003",
       "category_id": "CAT_OPS",
       "title": "하자카드 처리 및 재발급 방법",
-      "summary": "하자카드 처리 및 재발급 절차",
+      "summary": "하자카드 처리절차 및 재발급 절차",
       "content": "첨부확인",
       "tags": "하자카드, 재발급",
       "attachment_url": "https://www.canva.com/design/DAG0gRJFkMU/1qDlIhSLHZjoG46I391o-Q/watch?utm_content=DAG0gRJFkMU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h3f50a7891b"
@@ -121,11 +121,20 @@
       "id": "MNL_OPS_004",
       "category_id": "CAT_OPS",
       "title": "하자카드 처리 및 재발급 취소 방법",
-      "summary": "하자카드 처리 및 재발급 취소 절차",
+      "summary": "하자카드 처리 및 재발급 절차",
       "content": "",
       "tags": "하자카드, 재발급, 취소",
       "attachment_url": "https://www.canva.com/design/DAG0hRGzLxg/hM7Mj3MgV2LM2W2UMVu_1Q/watch?utm_content=DAG0hRGzLxg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h9686da408e"
+    },
+    {
+      "id": "MNL_OPS_005",
+      "category_id": "CAT_OPS",
+      "title": "하자카드 처리 및 잔액이체 방법",
+      "summary": "하자카드 처리 및 잔액이체 절차",
+      "content": "",
+      "tags": "하자카드, 잔액이체",
+      "attachment_url": "https://www.canva.com/design/DAG0hpvkpR0/XV_A4w5cgDU2Sew4LDujnw/watch?utm_content=DAG0hpvkpR0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=had0bca9c5c"
     }
   ],
-  "exported_at": "2025-10-01T06:44:09.951Z"
+  "exported_at": "2025-10-01T07:41:36.257Z"
 }
