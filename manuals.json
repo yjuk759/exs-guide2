@@ -1,5 +1,5 @@
 {
-  "version": "20251001-134010",
+  "version": "20251001-150957",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -91,7 +91,7 @@
       "attachment_url": "https://drive.google.com/file/d/1D592dBGRrBSxQ5Tsj5AUaffsRvFXbvNm/view?usp=sharing"
     },
     {
-      "id": "MNL_OPS_003",
+      "id": "MNL_OPS_001",
       "category_id": "CAT_OPS",
       "title": "전자카드 충전",
       "summary": "전자카드 충전 절차",
@@ -100,7 +100,7 @@
       "attachment_url": "https://www.canva.com/design/DAG0f0OUGes/B_RAcmKYnt_KDY66_8piMg/watch?utm_content=DAG0f0OUGes&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha564c19aa7"
     },
     {
-      "id": "MNL_OPS_004",
+      "id": "MNL_OPS_002",
       "category_id": "CAT_OPS",
       "title": "전자카드 충전 취소",
       "summary": "전자카드 충전 취소 절차",
@@ -109,14 +109,23 @@
       "attachment_url": "https://www.canva.com/design/DAG0gG3xaVI/lFx4j0VaCxOTEc_pnOil1w/watch?utm_content=DAG0gG3xaVI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h45190c40e6"
     },
     {
-      "id": "MNL_OPS_005",
+      "id": "MNL_OPS_003",
       "category_id": "CAT_OPS",
       "title": "하자카드 처리 및 재발급 방법",
       "summary": "하자카드 처리절차 및 재발급 절차",
       "content": "첨부확인",
       "tags": "하자카드, 재발급",
       "attachment_url": "https://www.canva.com/design/DAG0gRJFkMU/1qDlIhSLHZjoG46I391o-Q/watch?utm_content=DAG0gRJFkMU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h3f50a7891b"
+    },
+    {
+      "id": "MNL_OPS_004",
+      "category_id": "CAT_OPS",
+      "title": "하자카드 처리 및 재발급 취소 방법",
+      "summary": "하자카드 처리 및 재발급 절차",
+      "content": "",
+      "tags": "하자카드, 재발급, 취소",
+      "attachment_url": "https://www.canva.com/design/DAG0hRGzLxg/hM7Mj3MgV2LM2W2UMVu_1Q/watch?utm_content=DAG0hRGzLxg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h9686da408e"
     }
   ],
-  "exported_at": "2025-10-01T04:40:10.063Z"
+  "exported_at": "2025-10-01T06:09:57.439Z"
 }
