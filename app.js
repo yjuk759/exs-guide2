@@ -369,7 +369,21 @@ function renderCategory(root,catId){
   const manuals=state.manuals.filter(m=>m.category_id===catId);
   const list=el('<div class="list"></div>');
   manuals.forEach(m=>{
-    const item=el(`<div class="item"><div class="title">${m.title}</div></div>`);
+    const hasSummary = (m.summary || '').trim().length > 0;
+    const tagsHTML = m.tags
+      ? `<div class="chips">` + m.tags.split(',')
+          .map(t => `<span class="chip">${t.trim()}</span>`)
+          .join('') + `</div>`
+      : '';
+    const subHTML = hasSummary ? `<div class="sub">${m.summary}</div>` : '';
+
+    const item = el(`
+      <div class="item">
+        <div class="title">${m.title}</div>
+        ${subHTML}
+        ${tagsHTML}
+      </div>
+    `);
     item.onclick=()=>navigate('manual',{id:m.id});
     list.appendChild(item);
   });
@@ -419,7 +433,21 @@ function renderSearch(root){
   results.forEach(m=>{
     const cat=state.categories.find(ca=>ca.id===m.category_id);
     const catBadge=cat?`${cat.icon||'📁'} ${cat.name}`:(m.category_id||'');
-    const item=el(`<div class="item"><div class="title">${m.title}</div><div class="sub">${m.summary||''}</div><div class="chips" style="margin-top:6px;"><span class="chip">${catBadge}</span>${m.tags?m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join(''):''}</div></div>`);
+    const hasSummary = (m.summary || '').trim().length > 0;
+    const tagChips = (m.tags ? m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('') : '');
+    const chipsHTML = `<div class="chips" style="margin-top:6px;">
+      <span class="chip">${catBadge}</span>${tagChips}
+    </div>`;
+    const subHTML = hasSummary ? `<div class="sub">${m.summary}</div>` : '';
+
+    const item = el(`
+      <div class="item">
+        <div class="title">${m.title}</div>
+        ${subHTML}
+        ${chipsHTML}
+      </div>
+    `);
+
     item.onclick = () => {
      const atts = getAttachments(m);   // 첨부 여러 개 처리
      if (atts.length === 1) {
