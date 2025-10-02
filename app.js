@@ -61,8 +61,10 @@ function getAttachments(m){
 const LS_KEYS = {
   cats: 'exs_categories',
   mans: 'exs_manuals',
-  ver : 'exs_data_version' // manuals.json에 version 필드가 들어오면 비교
+  ver : 'exs_data_version', // manuals.json에 version 필드가 들어오면 비교
+  admin: 'exs_admin'        // ✅ 관리자 상태 저장용 키
 };
+
 
 function saveToLocal(version=null){
   localStorage.setItem(LS_KEYS.cats, JSON.stringify(state.categories));
@@ -83,17 +85,21 @@ function getLocalVersion(){
   return localStorage.getItem(LS_KEYS.ver);
 }
 
+function loadAdminFromLocal(){
+  const a = localStorage.getItem(LS_KEYS.admin);
+  state.admin = (a === '1');   // 값이 "1"이면 관리자 모드
+  if (state.admin) {
+    byId('adminBar')?.classList.remove('hidden');
+  }
+}
+
 // ===== 관리자 =====
 function enterAdmin(){
-  showModal('관리자 로그인', `
-    <div class="form-row full">
-      <label>비밀번호</label>
-      <input id="admin_pass" type="password" placeholder="관리자 비밀번호 입력">
-    </div>
-  `, () => {
+  showModal('관리자 로그인', `...`, () => {
     const pass = byId('admin_pass').value.trim();
     if (pass === 'exsadmin'){
       state.admin = true;
+      localStorage.setItem(LS_KEYS.admin, '1');        // ← 추가
       byId('adminBar')?.classList.remove('hidden');
       render();
     } else {
@@ -111,6 +117,7 @@ function enterAdmin(){
 
 function exitAdmin(){
   state.admin = false;
+  localStorage.setItem(LS_KEYS.admin, '0');            // ← 추가
   byId('adminBar')?.classList.add('hidden');
   render();
 }
@@ -153,8 +160,13 @@ function showAddManual(){
     <div class="form-row full"><div><label>내용</label><textarea id="m_content" rows="6" placeholder="1) 확인 ... 2) 발급 ..."></textarea></div></div>
     <div class="form-row"><div><label>태그(콤마)</label><input id="m_tags" placeholder="분실, 임시통행권, 민원"></div>
     <div><label>첨부 URL (여러 개면 , 로 구분)</label>
-     <input id="m_attach" placeholder="https://a.pdf, https://b.pdf">
+      <input id="m_attach" 
+             value="${Array.isArray(m.attachments) 
+                      ? m.attachments.map(x=>x?.url||'').filter(Boolean).join(', ') 
+                      : (m.attachment_url||'')}" 
+             placeholder="https://a.pdf, https://b.pdf">
     </div>
+
 
   `, () => {
     const id = byId('m_id').value.trim();
@@ -469,13 +481,19 @@ function renderSearch(root){
 
 // ===== 부팅 =====
 async function boot(){
-  loadFromLocal(); render();
+  loadFromLocal();
+  loadAdminFromLocal();   // ✅ 관리자 모드 상태 복원
+  render();
   try{
     const res=await fetch('manuals.json?ts='+Date.now(),{cache:'no-store'});
-    if(res.ok){ const data=await res.json(); const remoteVersion=(data&&(data.version??data.exported_at))||null; const localVersion=getLocalVersion();
+    if(res.ok){ 
+      const data=await res.json(); 
+      const remoteVersion=(data&&(data.version??data.exported_at))||null; 
+      const localVersion=getLocalVersion();
       if(Array.isArray(data.categories)) state.categories=data.categories;
       if(Array.isArray(data.manuals)) state.manuals=data.manuals;
-      saveToLocal(remoteVersion??localVersion??null); render();
+      saveToLocal(remoteVersion??localVersion??null); 
+      render();
     }
   }catch(e){ console.warn('manuals.json fetch failed',e); }
 }
