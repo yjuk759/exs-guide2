@@ -403,15 +403,29 @@ function renderCategory(root,catId){
     c.appendChild(headerActions);
   }
 
-  // 매뉴얼 목록(기존 형태: 제목만)
+  // 매뉴얼 목록
   const manuals = state.manuals.filter(m=>m.category_id===catId);
-  const list = el('<div class="list"></div>');
+const list = el('<div class="list"></div>');
 
-  if (manuals.length === 0){
-    list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>'));
-  } else {
-    manuals.forEach(m=>{
-      const item = el(`<div class="item"><div class="title">${m.title}</div></div>`);
+if (manuals.length === 0){
+  list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>'));
+} else {
+  manuals.forEach(m=>{
+    const hasSummary = (m.summary || '').trim().length > 0;
+    const tagsHTML = m.tags
+      ? `<div class="chips">` + m.tags.split(',')
+          .map(t => `<span class="chip">${t.trim()}</span>`)
+          .join('') + `</div>`
+      : '';
+    const subHTML = hasSummary ? `<div class="sub">${m.summary}</div>` : '';
+
+    const item = el(`
+      <div class="item">
+        <div class="title">${m.title}</div>
+        ${subHTML}
+        ${tagsHTML}
+      </div>
+    `);
       item.onclick = () => {
      const atts = getAttachments(m);   // 첨부 여러 개 처리
      if (atts.length === 1) {
@@ -421,23 +435,23 @@ function renderCategory(root,catId){
      }
    };
       // 관리자 버튼(수정/삭제)
-      if (state.admin){
-        const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
-        const btnEdit   = el('<button class="mini ghost">수정</button>');
-        const btnDelete = el('<button class="mini danger">삭제</button>');
-        btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditManual(m.id); };
-        btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteManual(m.id); };
-        adminRow.appendChild(btnEdit);
-        adminRow.appendChild(btnDelete);
-        item.appendChild(adminRow);
-      }
+       if (state.admin){
+       const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
+       const btnEdit   = el('<button class="mini ghost">수정</button>');
+       const btnDelete = el('<button class="mini danger">삭제</button>');
+       btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditManual(m.id); };
+       btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteManual(m.id); };
+       adminRow.appendChild(btnEdit);
+       adminRow.appendChild(btnDelete);
+       item.appendChild(adminRow);
+     }
 
-      list.appendChild(item);
-    });
-  }
+     list.appendChild(item);
+   });
+ }
 
-  c.appendChild(list);
-  root.appendChild(c);
+ c.appendChild(list);
+ root.appendChild(c);
 }
 
 function renderManual(root,id){
