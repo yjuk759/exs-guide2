@@ -331,84 +331,103 @@ function render(){
 }
 
 function renderHome(root){
+  // 홈으로 올 때 검색 상태 초기화
   state.search = '';
   const input = byId('searchInput');
   if (input) input.value = '';
 
   const c = el('<div class="container"></div>');
   c.appendChild(el('<div class="page-title">카테고리</div>'));
+
   const grid = el('<div class="grid"></div>');
 
-  [...state.categories].sort((a,b)=>(a.order||0)-(b.order||0)).forEach(cat=>{
-    const count = state.manuals.filter(m=>m.category_id===cat.id).length;
-    const card = el(`
-      <div class="card">
-        <div class="badge">${cat.icon||'📁'}</div>
-        <div class="title">${cat.name}</div>
-        <div class="sub">${count}개 문서</div>
-      </div>`);
+  [...state.categories]
+    .sort((a,b)=>(a.order||0)-(b.order||0))
+    .forEach(cat=>{
+      const count = state.manuals.filter(m=>m.category_id===cat.id).length;
 
-    card.onclick = ()=>navigate('category',{id:cat.id});
-
-    if (state.admin){
-      const adminRow = el(`
-        <div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;">
-          <button class="mini ghost">수정</button>
-          <button class="mini danger">삭제</button>
+      const card = el(`
+        <div class="card">
+          <div class="badge">${cat.icon||'📁'}</div>
+          <div class="title">${cat.name}</div>
+          <div class="sub">${count}개 문서</div>
         </div>`);
-      adminRow.children[0].onclick = (e)=>{ e.stopPropagation(); showEditCategory(cat.id); };
-      adminRow.children[1].onclick = (e)=>{ e.stopPropagation(); deleteCategory(cat.id); };
-      card.appendChild(adminRow);
-    }
 
-    grid.appendChild(card);
-  });
+      card.onclick = ()=>navigate('category',{id:cat.id});
+
+      // 관리자 버튼(수정/삭제)
+      if (state.admin){
+        const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
+        const btnEdit   = el('<button class="mini ghost">수정</button>');
+        const btnDelete = el('<button class="mini danger">삭제</button>');
+
+        btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditCategory(cat.id); };
+        btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteCategory(cat.id); };
+
+        adminRow.appendChild(btnEdit);
+        adminRow.appendChild(btnDelete);
+        card.appendChild(adminRow);
+      }
+
+      grid.appendChild(card);
+    });
 
   c.appendChild(grid);
   root.appendChild(c);
 }
 
 function renderCategory(root,catId){
-  const cat=state.categories.find(x=>x.id===catId);
-  const c=el('<div class="container"></div>');
-  c.appendChild(el(`<div class="breadcrumbs"><a href="#" onclick="navigate('home')">홈</a> · ${cat?cat.name:''}</div>`));
+  const cat = state.categories.find(x=>x.id===catId);
+
+  const c = el('<div class="container"></div>');
+  // 빵부스러기(문자열만, 템플릿 중첩 피함)
+  const bc = el('<div class="breadcrumbs"></div>');
+  const aHome = el('<a href="#">홈</a>');
+  aHome.onclick = (e)=>{ e.preventDefault(); navigate('home'); };
+  bc.appendChild(aHome);
+  bc.appendChild(document.createTextNode(' · ' + (cat ? cat.name : '카테고리')));
+  c.appendChild(bc);
+
   c.appendChild(el(`<div class="page-title">${cat?cat.name:'카테고리'}</div>`));
 
+  // 상단 관리자 버튼(카테고리 수정/삭제)
   if (state.admin && cat){
-    const headerActions=el(`
-      <div class="action-row" style="margin-bottom:10px;">
-        <button class="button ghost">카테고리 수정</button>
-        <button class="button danger">카테고리 삭제</button>
-      </div>`);
-    headerActions.children[0].onclick=()=>showEditCategory(cat.id);
-    headerActions.children[1].onclick=()=>deleteCategory(cat.id);
+    const headerActions = el('<div class="action-row" style="margin-bottom:10px;"></div>');
+    const btnEdit   = el('<button class="button ghost">카테고리 수정</button>');
+    const btnDelete = el('<button class="button danger">카테고리 삭제</button>');
+    btnEdit.onclick   = ()=>showEditCategory(cat.id);
+    btnDelete.onclick = ()=>deleteCategory(cat.id);
+    headerActions.appendChild(btnEdit);
+    headerActions.appendChild(btnDelete);
     c.appendChild(headerActions);
   }
 
-  const manuals=state.manuals.filter(m=>m.category_id===catId);
-  const list=el('<div class="list"></div>');
-  manuals.forEach(m=>{
-    const item=el(`<div class="item">
-      <div class="title">${m.title}</div>
-      ${m.summary?`<div class="sub">${m.summary}</div>`:''}
-      ${m.tags?`<div class="chips">`+m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('')+`</div>`:''}
-    </div>`);
+  // 매뉴얼 목록(기존처럼 제목만)
+  const manuals = state.manuals.filter(m=>m.category_id===catId);
+  const list = el('<div class="list"></div>');
 
-    item.onclick=()=>navigate('manual',{id:m.id});
+  if (manuals.length === 0){
+    list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>'));
+  } else {
+    manuals.forEach(m=>{
+      const item = el(`<div class="item"><div class="title">${m.title}</div></div>`);
+      item.onclick = ()=>navigate('manual',{id:m.id});
 
-    if (state.admin){
-      const adminRow = el(`
-        <div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;">
-          <button class="mini ghost">수정</button>
-          <button class="mini danger">삭제</button>
-        </div>`);
-      adminRow.children[0].onclick=(e)=>{ e.stopPropagation(); showEditManual(m.id); };
-      adminRow.children[1].onclick=(e)=>{ e.stopPropagation(); deleteManual(m.id); };
-      item.appendChild(adminRow);
-    }
+      // 관리자 버튼(수정/삭제)
+      if (state.admin){
+        const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
+        const btnEdit   = el('<button class="mini ghost">수정</button>');
+        const btnDelete = el('<button class="mini danger">삭제</button>');
+        btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditManual(m.id); };
+        btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteManual(m.id); };
+        adminRow.appendChild(btnEdit);
+        adminRow.appendChild(btnDelete);
+        item.appendChild(adminRow);
+      }
 
-    list.appendChild(item);
-  });
+      list.appendChild(item);
+    });
+  }
 
   c.appendChild(list);
   root.appendChild(c);
