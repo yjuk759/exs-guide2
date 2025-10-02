@@ -339,20 +339,30 @@ function renderHome(root){
   c.appendChild(el('<div class="page-title">카테고리</div>'));
   const grid = el('<div class="grid"></div>');
 
-  [...state.categories]
-    .filter(cat => !cat.parent_id)   // 최상위만
-    .sort((a,b)=>(a.order||0)-(b.order||0))
-    .forEach(cat=>{
-      const count = state.manuals.filter(m=>m.category_id===cat.id).length;
-      const card = el(`
-        <div class="card">
-          <div class="badge">${cat.icon||'📁'}</div>
-          <div class="title">${cat.name}</div>
-          <div class="sub">${count}개 문서</div>
+  [...state.categories].sort((a,b)=>(a.order||0)-(b.order||0)).forEach(cat=>{
+    const count = state.manuals.filter(m=>m.category_id===cat.id).length;
+    const card = el(`
+      <div class="card">
+        <div class="badge">${cat.icon||'📁'}</div>
+        <div class="title">${cat.name}</div>
+        <div class="sub">${count}개 문서</div>
+      </div>`);
+
+    card.onclick = ()=>navigate('category',{id:cat.id});
+
+    if (state.admin){
+      const adminRow = el(`
+        <div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;">
+          <button class="mini ghost">수정</button>
+          <button class="mini danger">삭제</button>
         </div>`);
-      card.onclick = ()=>navigate('category',{id:cat.id});
-      grid.appendChild(card);
-    });
+      adminRow.children[0].onclick = (e)=>{ e.stopPropagation(); showEditCategory(cat.id); };
+      adminRow.children[1].onclick = (e)=>{ e.stopPropagation(); deleteCategory(cat.id); };
+      card.appendChild(adminRow);
+    }
+
+    grid.appendChild(card);
+  });
 
   c.appendChild(grid);
   root.appendChild(c);
@@ -364,23 +374,45 @@ function renderCategory(root,catId){
   c.appendChild(el(`<div class="breadcrumbs"><a href="#" onclick="navigate('home')">홈</a> · ${cat?cat.name:''}</div>`));
   c.appendChild(el(`<div class="page-title">${cat?cat.name:'카테고리'}</div>`));
 
-  // 하위 카테고리 먼저
-  const subs = state.categories.filter(sc => sc.parent_id === catId);
-  if (subs.length > 0) {
-    const grid = el('<div class="grid"></div>');
-    subs.forEach(sc=>{
-      const count = state.manuals.filter(m=>m.category_id===sc.id).length;
-      const card = el(`
-        <div class="card">
-          <div class="badge">${sc.icon||'📁'}</div>
-          <div class="title">${sc.name}</div>
-          <div class="sub">${count}개 문서</div>
-        </div>`);
-      card.onclick = ()=>navigate('category',{id:sc.id});
-      grid.appendChild(card);
-    });
-    c.appendChild(grid);
+  if (state.admin && cat){
+    const headerActions=el(`
+      <div class="action-row" style="margin-bottom:10px;">
+        <button class="button ghost">카테고리 수정</button>
+        <button class="button danger">카테고리 삭제</button>
+      </div>`);
+    headerActions.children[0].onclick=()=>showEditCategory(cat.id);
+    headerActions.children[1].onclick=()=>deleteCategory(cat.id);
+    c.appendChild(headerActions);
   }
+
+  const manuals=state.manuals.filter(m=>m.category_id===catId);
+  const list=el('<div class="list"></div>');
+  manuals.forEach(m=>{
+    const item=el(`<div class="item">
+      <div class="title">${m.title}</div>
+      ${m.summary?`<div class="sub">${m.summary}</div>`:''}
+      ${m.tags?`<div class="chips">`+m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('')+`</div>`:''}
+    </div>`);
+
+    item.onclick=()=>navigate('manual',{id:m.id});
+
+    if (state.admin){
+      const adminRow = el(`
+        <div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;">
+          <button class="mini ghost">수정</button>
+          <button class="mini danger">삭제</button>
+        </div>`);
+      adminRow.children[0].onclick=(e)=>{ e.stopPropagation(); showEditManual(m.id); };
+      adminRow.children[1].onclick=(e)=>{ e.stopPropagation(); deleteManual(m.id); };
+      item.appendChild(adminRow);
+    }
+
+    list.appendChild(item);
+  });
+
+  c.appendChild(list);
+  root.appendChild(c);
+}
 
   // 매뉴얼
   const manuals=state.manuals.filter(m=>m.category_id===catId);
