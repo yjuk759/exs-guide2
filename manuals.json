@@ -1,5 +1,5 @@
 {
-  "version": "20251002-112810",
+  "version": "20251002-130553",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -143,7 +143,16 @@
       "content": "",
       "tags": "무인정산기, 초기화",
       "attachment_url": "https://www.canva.com/design/DAG0mgkDSXM/JDwZHwuNNoZ8lGNkZZgcaQ/watch?utm_content=DAG0mgkDSXM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h583788ee6d"
+    },
+    {
+      "id": "MNL_OPS_007",
+      "category_id": "CAT_OPS",
+      "title": "무인정산기 음성 오류 처리 방법",
+      "summary": "무인정산기 음성 오류 처리 절차",
+      "content": "",
+      "tags": "무인정산기, 음성",
+      "attachment_url": "https://www.canva.com/design/DAG0mhfLj80/-lOu7jifeZ9a0j54fXKngA/watch?utm_content=DAG0mhfLj80&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha1f4b59402"
     }
   ],
-  "exported_at": "2025-10-02T02:28:10.825Z"
+  "exported_at": "2025-10-02T04:05:53.512Z"
 }
