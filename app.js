@@ -380,7 +380,8 @@ function renderCategory(root,catId){
   const cat = state.categories.find(x=>x.id===catId);
 
   const c = el('<div class="container"></div>');
-  // 빵부스러기(문자열만, 템플릿 중첩 피함)
+
+  // breadcrumbs
   const bc = el('<div class="breadcrumbs"></div>');
   const aHome = el('<a href="#">홈</a>');
   aHome.onclick = (e)=>{ e.preventDefault(); navigate('home'); };
@@ -390,7 +391,7 @@ function renderCategory(root,catId){
 
   c.appendChild(el(`<div class="page-title">${cat?cat.name:'카테고리'}</div>`));
 
-  // 상단 관리자 버튼(카테고리 수정/삭제)
+  // 상단 관리자 버튼
   if (state.admin && cat){
     const headerActions = el('<div class="action-row" style="margin-bottom:10px;"></div>');
     const btnEdit   = el('<button class="button ghost">카테고리 수정</button>');
@@ -402,7 +403,7 @@ function renderCategory(root,catId){
     c.appendChild(headerActions);
   }
 
-  // 매뉴얼 목록(기존처럼 제목만)
+  // 매뉴얼 목록(기존 형태: 제목만)
   const manuals = state.manuals.filter(m=>m.category_id===catId);
   const list = el('<div class="list"></div>');
 
@@ -429,32 +430,6 @@ function renderCategory(root,catId){
     });
   }
 
-  c.appendChild(list);
-  root.appendChild(c);
-}
-
-  // 매뉴얼
-  const manuals=state.manuals.filter(m=>m.category_id===catId);
-  const list=el('<div class="list"></div>');
-  manuals.forEach(m=>{
-    const hasSummary = (m.summary || '').trim().length > 0;
-    const tagsHTML = m.tags
-      ? `<div class="chips">` + m.tags.split(',')
-          .map(t => `<span class="chip">${t.trim()}</span>`)
-          .join('') + `</div>`
-      : '';
-    const subHTML = hasSummary ? `<div class="sub">${m.summary}</div>` : '';
-
-    const item = el(`
-      <div class="item">
-        <div class="title">${m.title}</div>
-        ${subHTML}
-        ${tagsHTML}
-      </div>
-    `);
-    item.onclick=()=>navigate('manual',{id:m.id});
-    list.appendChild(item);
-  });
   c.appendChild(list);
   root.appendChild(c);
 }
