@@ -95,11 +95,16 @@ function loadAdminFromLocal(){
 
 // ===== 관리자 =====
 function enterAdmin(){
-  showModal('관리자 로그인', `...`, () => {
+  showModal('관리자 로그인', `
+    <div class="form-row full">
+      <label>비밀번호</label>
+      <input id="admin_pass" type="password" placeholder="관리자 비밀번호 입력">
+    </div>
+  `, () => {
     const pass = byId('admin_pass').value.trim();
     if (pass === 'exsadmin'){
       state.admin = true;
-      localStorage.setItem(LS_KEYS.admin, '1');        // ← 추가
+      localStorage.setItem(LS_KEYS.admin, '1');   // 로그인 상태 저장
       byId('adminBar')?.classList.remove('hidden');
       render();
     } else {
@@ -117,7 +122,7 @@ function enterAdmin(){
 
 function exitAdmin(){
   state.admin = false;
-  localStorage.setItem(LS_KEYS.admin, '0');            // ← 추가
+  localStorage.removeItem(LS_KEYS.admin);   // 로그인 상태 해제
   byId('adminBar')?.classList.add('hidden');
   render();
 }
