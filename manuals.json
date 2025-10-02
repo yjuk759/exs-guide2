@@ -1,5 +1,5 @@
 {
-  "version": "20251001-164136",
+  "version": "20251002-112810",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -134,7 +134,16 @@
       "content": "",
       "tags": "하자카드, 잔액이체",
       "attachment_url": "https://www.canva.com/design/DAG0hpvkpR0/XV_A4w5cgDU2Sew4LDujnw/watch?utm_content=DAG0hpvkpR0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=had0bca9c5c"
+    },
+    {
+      "id": "MNL_OPS_006",
+      "category_id": "CAT_OPS",
+      "title": "무인정산기 초기화 방법",
+      "summary": "무인정산기 초기화",
+      "content": "",
+      "tags": "무인정산기, 초기화",
+      "attachment_url": "https://www.canva.com/design/DAG0mgkDSXM/JDwZHwuNNoZ8lGNkZZgcaQ/watch?utm_content=DAG0mgkDSXM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h583788ee6d"
     }
   ],
-  "exported_at": "2025-10-01T07:41:36.257Z"
+  "exported_at": "2025-10-02T02:28:10.825Z"
 }
