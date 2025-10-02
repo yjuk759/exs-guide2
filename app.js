@@ -412,8 +412,14 @@ function renderCategory(root,catId){
   } else {
     manuals.forEach(m=>{
       const item = el(`<div class="item"><div class="title">${m.title}</div></div>`);
-      item.onclick = ()=>navigate('manual',{id:m.id});
-
+      item.onclick = () => {
+     const atts = getAttachments(m);   // 첨부 여러 개 처리
+     if (atts.length === 1) {
+       window.open(atts[0].url, "_blank");   // 링크 1개면 바로 열기
+     } else {
+       navigate('manual', { id: m.id });     // 0개 또는 2개 이상이면 상세 페이지
+     }
+   };
       // 관리자 버튼(수정/삭제)
       if (state.admin){
         const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
