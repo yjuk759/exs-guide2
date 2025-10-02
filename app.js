@@ -40,6 +40,23 @@ function filterBySearch(list){
   return list.filter(x => ((x.title||'')+(x.summary||'')+(x.tags||'')).toLowerCase().includes(state.search));
 }
 
+// 여러 첨부 URL 지원: m.attachments (배열) 또는 m.attachment_url(콤마 구분)을 통합 파싱
+function getAttachments(m){
+  if (!m) return [];
+  if (Array.isArray(m.attachments)) {
+    return m.attachments
+      .filter(x => x && x.url)
+      .map((x, i) => ({
+        title: (x.title && String(x.title).trim()) || `첨부${i+1}`,
+        url: String(x.url).trim()
+      }));
+  }
+  const raw = (m.attachment_url || '').trim();
+  if (!raw) return [];
+  const urls = raw.split(',').map(s => s.trim()).filter(Boolean);
+  return urls.map((u, i) => ({ title: `첨부${i+1}`, url: u }));
+}
+
 // ===== 저장 =====
 const LS_KEYS = {
   cats: 'exs_categories',
@@ -126,7 +143,10 @@ function showAddManual(){
     <div class="form-row full"><div><label>요약</label><input id="m_summary" placeholder="차량번호 확인 및 임시통행권"></div></div>
     <div class="form-row full"><div><label>내용</label><textarea id="m_content" rows="6" placeholder="1) 확인 ... 2) 발급 ..."></textarea></div></div>
     <div class="form-row"><div><label>태그(콤마)</label><input id="m_tags" placeholder="분실, 임시통행권, 민원"></div>
-    <div><label>첨부 URL</label><input id="m_attach" placeholder="https://...pdf"></div></div>
+    <div><label>첨부 URL (여러 개면 , 로 구분)</label>
+     <input id="m_attach" placeholder="https://a.pdf, https://b.pdf">
+    </div>
+
   `, () => {
     const id = byId('m_id').value.trim();
     const category_id = byId('m_cat').value;
@@ -180,7 +200,10 @@ function showEditManual(manualId){
     <div class="form-row full"><div><label>요약</label><input id="m_summary" value="${m.summary||''}"></div></div>
     <div class="form-row full"><div><label>내용</label><textarea id="m_content" rows="6">${(m.content||'').replace(/</g,'&lt;')}</textarea></div></div>
     <div class="form-row"><div><label>태그(콤마)</label><input id="m_tags" value="${m.tags||''}"></div>
-    <div><label>첨부 URL</label><input id="m_attach" value="${m.attachment_url||''}"></div></div>
+    <div><label>첨부 URL (여러 개면 , 로 구분)</label>
+     <input id="m_attach" placeholder="https://a.pdf, https://b.pdf">
+    </div>
+
   `, () => {
     const newId  = byId('m_id').value.trim();
     const catId  = byId('m_cat').value;
@@ -322,12 +345,12 @@ function renderCategory(root,catId){
   if(withScore.length===0){ list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>')); }
   else withScore.forEach(m=>{
     const item=el(`<div class="item"><div class="title">${m.title}</div><div class="sub">${m.summary||''}</div>${m.tags?`<div class="chips">`+m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('')+`</div>`:''}</div>`);
-    item.onclick = () => {
-  const url = (m.attachment_url || "").trim();
-  if (url) {
-     window.open(url, "_blank");
+   item.onclick = () => {
+     const atts = getAttachments(m);   // 첨부 여러 개 처리
+     if (atts.length === 1) {
+       window.open(atts[0].url, "_blank");   // 링크 1개면 바로 열기
      } else {
-     navigate('manual', { id: m.id });
+       navigate('manual', { id: m.id });     // 0개 또는 2개 이상이면 상세 페이지
      }
    };
     if(state.admin){
@@ -349,7 +372,14 @@ function renderManual(root,id){
   if(m){
     const rt=el('<div></div>'); m.content.split('\n').forEach(line=>rt.appendChild(el('<p>'+line.replace(/\s/g,'&nbsp;')+'</p>'))); c.appendChild(rt);
     const actions=el('<div class="action-row"></div>');
-    if(m.attachment_url){ const btn=el('<a class="button" target="_blank">첨부 열기</a>'); btn.href=m.attachment_url; actions.appendChild(btn); }
+    const atts = getAttachments(m);
+   if (atts.length > 0) {
+     atts.forEach((a, idx) => {
+       const btn = el(`<a class="button" target="_blank">${a.title || `첨부${idx+1}`}</a>`);
+       btn.href = a.url;
+       actions.appendChild(btn);
+     });
+   }
     const share=el('<button class="button ghost">링크 복사</button>'); share.onclick=()=>{navigator.clipboard.writeText(location.href);alert('문서 링크가 복사되었습니다.');}; actions.appendChild(share); c.appendChild(actions);
     if(state.admin){ const adminRow=el(`<div class="action-row"><button class="button ghost">수정</button><button class="button danger">삭제</button></div>`); adminRow.children[0].onclick=()=>showEditManual(m.id); adminRow.children[1].onclick=()=>deleteManual(m.id); c.appendChild(adminRow); }
   }
@@ -378,11 +408,11 @@ function renderSearch(root){
     const catBadge=cat?`${cat.icon||'📁'} ${cat.name}`:(m.category_id||'');
     const item=el(`<div class="item"><div class="title">${m.title}</div><div class="sub">${m.summary||''}</div><div class="chips" style="margin-top:6px;"><span class="chip">${catBadge}</span>${m.tags?m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join(''):''}</div></div>`);
     item.onclick = () => {
-     const url = (m.attachment_url || "").trim();
-     if (url) {
-        window.open(url, "_blank");
+     const atts = getAttachments(m);   // 첨부 여러 개 처리
+     if (atts.length === 1) {
+        window.open(atts[0].url, "_blank");   // 링크 1개면 바로 열기
       } else {
-        navigate('manual', { id: m.id });
+        navigate('manual', { id: m.id });     // 0개 또는 2개 이상이면 상세 페이지
       }
     };
     if(state.admin){
