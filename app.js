@@ -156,23 +156,53 @@ function showAddCategory(){
 
 
 function showAddManual(){
-  const catOptions = state.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  const catOptions = state.categories
+    .map(c => `<option value="${c.id}">${c.name}</option>`)
+    .join('');
+
   showModal('매뉴얼 추가', `
-    <div class="form-row"><div><label>문서 ID</label><input id="m_id" placeholder="MNL_OPS_003"></div>
-    <div><label>카테고리</label><select id="m_cat">${catOptions}</select></div></div>
-    <div class="form-row full"><div><label>제목</label><input id="m_title" placeholder="통행권 분실 처리 절차"></div></div>
-    <div class="form-row full"><div><label>요약</label><input id="m_summary" placeholder="차량번호 확인 및 임시통행권"></div></div>
-    <div class="form-row full"><div><label>내용</label><textarea id="m_content" rows="6" placeholder="1) 확인 ... 2) 발급 ..."></textarea></div></div>
-    <div class="form-row"><div><label>태그(콤마)</label><input id="m_tags" placeholder="분실, 임시통행권, 민원"></div>
-    <div><label>첨부 URL (여러 개면 , 로 구분)</label>
-      <input id="m_attach" 
-             value="${Array.isArray(m.attachments) 
-                      ? m.attachments.map(x=>x?.url||'').filter(Boolean).join(', ') 
-                      : (m.attachment_url||'')}" 
-             placeholder="https://a.pdf, https://b.pdf">
+    <div class="form-row">
+      <div>
+        <label>문서 ID</label>
+        <input id="m_id" placeholder="MNL_OPS_003">
+      </div>
+      <div>
+        <label>카테고리</label>
+        <select id="m_cat">${catOptions}</select>
+      </div>
     </div>
 
+    <div class="form-row full">
+      <div>
+        <label>제목</label>
+        <input id="m_title" placeholder="통행권 분실 처리 절차">
+      </div>
+    </div>
 
+    <div class="form-row full">
+      <div>
+        <label>요약</label>
+        <input id="m_summary" placeholder="차량번호 확인 및 임시통행권">
+      </div>
+    </div>
+
+    <div class="form-row full">
+      <div>
+        <label>내용</label>
+        <textarea id="m_content" rows="6" placeholder="1) 확인 ... 2) 발급 ..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label>태그(콤마)</label>
+        <input id="m_tags" placeholder="분실, 임시통행권, 민원">
+      </div>
+      <div>
+        <label>첨부 URL (여러 개면 , 로 구분)</label>
+        <input id="m_attach" placeholder="https://a.pdf, https://b.pdf">
+      </div>
+    </div>
   `, () => {
     const id = byId('m_id').value.trim();
     const category_id = byId('m_cat').value;
@@ -181,8 +211,13 @@ function showAddManual(){
     const content = byId('m_content').value.trim();
     const tags = byId('m_tags').value.trim();
     const attachment_url = byId('m_attach').value.trim();
-    if(!id || !category_id || !title) return alert('ID, 카테고리, 제목은 필수입니다.');
-    state.manuals.push({id, category_id, title, summary, content, tags, attachment_url});
+
+    if(!id || !category_id || !title){
+      alert('ID, 카테고리, 제목은 필수입니다.');
+      return;
+    }
+
+    state.manuals.push({ id, category_id, title, summary, content, tags, attachment_url });
     saveToLocal(getLocalVersion());
     render();
   });
@@ -219,6 +254,9 @@ function showEditManual(manualId){
   const m = state.manuals.find(x=>x.id===manualId);
   if(!m) return alert('매뉴얼을 찾을 수 없습니다.');
   const catOptions = state.categories.map(c => `<option value="${c.id}" ${c.id===m.category_id?'selected':''}>${c.name}</option>`).join('');
+  const prefillAttach = Array.isArray(m.attachments)
+  ? m.attachments.map(x=>x?.url||'').filter(Boolean).join(', ')
+  : (m.attachment_url || '');
   showModal('매뉴얼 수정', `
     <div class="form-row"><div><label>문서 ID</label><input id="m_id" value="${m.id}"></div>
     <div><label>카테고리</label><select id="m_cat">${catOptions}</select></div></div>
@@ -226,9 +264,11 @@ function showEditManual(manualId){
     <div class="form-row full"><div><label>요약</label><input id="m_summary" value="${m.summary||''}"></div></div>
     <div class="form-row full"><div><label>내용</label><textarea id="m_content" rows="6">${(m.content||'').replace(/</g,'&lt;')}</textarea></div></div>
     <div class="form-row"><div><label>태그(콤마)</label><input id="m_tags" value="${m.tags||''}"></div>
-    <div><label>첨부 URL (여러 개면 , 로 구분)</label>
-     <input id="m_attach" placeholder="https://a.pdf, https://b.pdf">
+    <div>
+     <label>첨부 URL (여러 개면 , 로 구분)</label>
+     <input id="m_attach" value="${prefillAttach}" placeholder="https://a.pdf, https://b.pdf">
     </div>
+
 
   `, () => {
     const newId  = byId('m_id').value.trim();
