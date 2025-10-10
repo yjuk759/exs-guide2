@@ -1,5 +1,5 @@
 {
-  "version": "20251010-140056",
+  "version": "20251010-140057",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -18,6 +18,12 @@
       "name": "긴급상황",
       "order": 3,
       "icon": "🚨"
+    },
+    {
+      "id": "CAT_PCS",
+      "name": "PC·보안",
+      "order": 4,
+      "icon": "🖥️",
     },
     {
       "id": "CAT_SAL",
@@ -53,12 +59,6 @@
       "order": 5,
       "icon": "🕓",
       "parent_id": "CAT_OPS"
-    },
-    {
-      "id": "CAT_PC",
-      "name": "PC·보안",
-      "order": 4,
-      "icon": "🖥️",
     }
   ],
   "manuals": [
@@ -180,8 +180,8 @@
       "attachment_url": "https://drive.google.com/file/d/1D128VCaYHutRTPgHo16nynTjlxdsAf_h/view?usp=sharing"
     },
     {
-      "id": "MNL_PC_001",
-      "category_id": "CAT_PC",
+      "id": "MNL_PCS_001",
+      "category_id": "CAT_PCS",
       "title": "도공망 문제 해결방법",
       "summary": "도공망 PC 자주 일어나는 오류 해결방법",
       "content": "",
@@ -189,8 +189,8 @@
       "attachment_url": "https://drive.google.com/file/d/15mDietc8D-Ztf_Es6Abfix4X6guKdRxH/view?usp=sharing"
     },
     {
-      "id": "MNL_PC_002",
-      "category_id": "CAT_PC",
+      "id": "MNL_PCS_002",
+      "category_id": "CAT_PCS",
       "title": "인터넷망 문제 해결 방법",
       "summary": "인터넷망 자주 일어나는 오류 해결방법",
       "content": "",
@@ -198,8 +198,8 @@
       "attachment_url": "https://drive.google.com/file/d/1kUw6M_tu3KPGmaA5eFBYEKFM8UbdtHno/view?usp=sharing"
     },
     {
-      "id": "MNL_PC_003",
-      "category_id": "CAT_PC",
+      "id": "MNL_PCS_003",
+      "category_id": "CAT_PCS",
       "title": "통합망 문제 해결방법",
       "summary": "통합망 자주 일어나는 오류 해결방법",
       "content": "",
@@ -207,5 +207,5 @@
       "attachment_url": "https://drive.google.com/file/d/1usn8RQ3RGDVegCvbXhemKwoxxkzBl125/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T05:00:56.416Z"
+  "exported_at": "2025-10-10T05:00:57.416Z"
 }
