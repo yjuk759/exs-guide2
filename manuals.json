@@ -1,9 +1,9 @@
 {
-  "version": "20251010-161857",
+  "version": "20251010-162819",
   "categories": [
     {
       "id": "CAT_OPS",
-      "name": "영업운영",
+      "name": "충북's 영업운영 지식",
       "order": 1,
       "icon": "🧭",
       "parent_id": null
@@ -220,7 +220,16 @@
       "content": "",
       "tags": "단말기, 환불",
       "attachment_url": "https://drive.google.com/file/d/18rRdWSkno-syY4aRkSnhEouM21mlBult/view?usp=sharing"
+    },
+    {
+      "id": "MNL_SAL_003",
+      "category_id": "CAT_SAL",
+      "title": "화물차량 심야할인 적용 기준",
+      "summary": "화물차량 심야할인 적용 기준",
+      "content": "",
+      "tags": "화물차량, 심야할인",
+      "attachment_url": "https://drive.google.com/file/d/1fQdjsxBVnv41NTSje6AKk2bdzuD1Bpuf/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T07:18:57.418Z"
+  "exported_at": "2025-10-10T07:28:19.233Z"
 }
