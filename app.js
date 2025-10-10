@@ -534,7 +534,7 @@ function renderCategory(root,catId){
   const list = el('<div class="list" style="margin-top:12px;"></div>');
 
   if (manuals.length === 0){
-    list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>'));
+    
   } else {
     manuals.forEach(m=>{
       const hasSummary = (m.summary || '').trim().length > 0;
