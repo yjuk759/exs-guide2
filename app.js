@@ -146,8 +146,16 @@ function showAddCategory(){
     const order = Number(byId('cat_order').value||0);
     const name = byId('cat_name').value.trim();
     const icon = (byId('cat_icon')?.value.trim()) || '📄';
-    const parent_id = byId('cat_parent').value.trim() || null;
+    let parent_id = byId('cat_parent').value.trim() || null;   // ← let 로 받기
+
     if(!id || !name) return alert('ID와 이름은 필수입니다.');
+
+    // ✅ 자기 자신을 부모로 저장하려고 하면 막기
+    if (parent_id === id) {
+      alert('부모 카테고리에 자기 자신은 선택할 수 없습니다. (최상위로 저장됩니다)');
+      parent_id = null;
+    }
+
     state.categories.push({id, name, order, icon, parent_id});
     saveToLocal(getLocalVersion());
     render();
@@ -227,28 +235,72 @@ function showAddManual(){
 function showEditCategory(catId){
   const cat = state.categories.find(c=>c.id===catId);
   if(!cat) return alert('카테고리를 찾을 수 없습니다.');
+
+  const parentOptions = ['<option value="">(최상위)</option>']
+    .concat(state.categories
+      .filter(c => c.id !== cat.id) // 자기 자신 제외
+      .map(c => `<option value="${c.id}" ${c.id === (cat.parent_id||'') ? 'selected' : ''}>${c.name}</option>`))
+    .join('');
+
   showModal('카테고리 수정', `
-    <div class="form-row"><div><label>카테고리 ID</label><input id="cat_id" value="${cat.id}"></div>
-    <div><label>정렬순서</label><input id="cat_order" type="number" value="${cat.order||0}"></div></div>
+    <div class="form-row">
+      <div><label>카테고리 ID</label><input id="cat_id" value="${cat.id}"></div>
+      <div><label>정렬순서</label><input id="cat_order" type="number" value="${cat.order||0}"></div>
+    </div>
     <div class="form-row full"><div><label>이름</label><input id="cat_name" value="${cat.name}"></div></div>
     <div class="form-row full"><div><label>아이콘(이모지)</label><input id="cat_icon" value="${cat.icon||'📄'}"></div></div>
-    <div class="info">ID 변경 시 이 카테고리에 연결된 매뉴얼의 category_id도 함께 변경됩니다.</div>
+    <div class="form-row full"><div><label>부모 카테고리</label><select id="cat_parent">${parentOptions}</select></div></div>
+    <div class="info">ID 변경 시 연결된 매뉴얼의 category_id도 함께 변경됩니다.</div>
   `, () => {
     const newId   = byId('cat_id').value.trim();
     const newName = byId('cat_name').value.trim();
     const newOrd  = Number(byId('cat_order').value||0);
     const newIcon = byId('cat_icon').value.trim() || '📄';
+    let parent_id = byId('cat_parent').value.trim() || null;
+
     if(!newId || !newName) return alert('ID와 이름은 필수입니다.');
+
+    // ✅ 자기 자신을 부모로 지정하는 경우 방지
+    if (parent_id === newId) {
+      alert('부모 카테고리에 자기 자신은 선택할 수 없습니다. (최상위로 저장됩니다)');
+      parent_id = null;
+    }
+
+    // (선택) 순환 방지: 자식(후손)을 부모로 지정 못하게
+    if (parent_id && isDescendant(state.categories, parent_id, cat.id)) {
+      alert('자신의 하위 카테고리를 부모로 지정할 수 없습니다.');
+      parent_id = cat.parent_id || null;
+    }
+
     const oldId = cat.id;
-    cat.id    = newId;
-    cat.name  = newName;
-    cat.order = newOrd;
-    cat.icon  = newIcon;
-    if (oldId !== newId) state.manuals.forEach(m => { if (m.category_id === oldId) m.category_id = newId; });
+    cat.id        = newId;
+    cat.name      = newName;
+    cat.order     = newOrd;
+    cat.icon      = newIcon;
+    cat.parent_id = parent_id;
+
+    // ID가 바뀌면 관련 참조 업데이트
+    if (oldId !== newId) {
+      state.categories.forEach(x => { if (x.parent_id === oldId) x.parent_id = newId; });
+      state.manuals.forEach(m => { if (m.category_id === oldId) m.category_id = newId; });
+    }
+
     saveToLocal(getLocalVersion());
     render();
   });
 }
+
+// 하위(후손) 여부 검사 유틸 (간단한 위로 타고가는 방식)
+function isDescendant(categories, possibleParentId, targetId){
+  // possibleParentId 가 targetId의 후손이면 true
+  let cur = categories.find(c => c.id === possibleParentId);
+  while (cur && cur.parent_id) {
+    if (cur.parent_id === targetId) return true;
+    cur = categories.find(c => c.id === cur.parent_id);
+  }
+  return false;
+}
+
 
 function showEditManual(manualId){
   const m = state.manuals.find(x=>x.id===manualId);
