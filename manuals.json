@@ -1,5 +1,5 @@
 {
-  "version": "20251010-155329",
+  "version": "20251010-161857",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -184,7 +184,43 @@
       "content": "",
       "tags": "통합만, PC",
       "attachment_url": "https://drive.google.com/file/d/1usn8RQ3RGDVegCvbXhemKwoxxkzBl125/view?usp=sharing"
+    },
+    {
+      "id": "MNL_SAL_001",
+      "category_id": "CAT_SAL",
+      "title": "할인코드 모음",
+      "summary": "할인속성 코드 확인",
+      "content": "",
+      "tags": "할인, 코드",
+      "attachment_url": "https://drive.google.com/file/d/1t3lz3oiV4HRbwY2C5Y-LJXpeHENDPtzb/view?usp=sharing"
+    },
+    {
+      "id": "MNL_SAL_002",
+      "category_id": "CAT_SAL",
+      "title": "보트견인 할인 적용(감면차량 및 전기수소차)",
+      "summary": "보트견인 차량(감면차량 및 전기수소차 적용 예시)",
+      "content": "",
+      "tags": "보트견인, 전기수소차, 전기차, 감면차량",
+      "attachment_url": "https://drive.google.com/file/d/17CN_5rtJaYGFTw0rWeVtMDr-ovFtgrlf/view?usp=sharing"
+    },
+    {
+      "id": "MNL_EVA_001",
+      "category_id": "CAT_EVA",
+      "title": "근무확인서 수정처리 기준",
+      "summary": "근무확인서 수정처리 기준",
+      "content": "",
+      "tags": "근무확인서, 수정",
+      "attachment_url": "https://drive.google.com/file/d/1MsIAzTAa6Y-boUTWLs8B9fAK0veIdUAf/view?usp=sharing"
+    },
+    {
+      "id": "MNL_REF_001",
+      "category_id": "CAT_REF",
+      "title": "단말기 정보 미변경 차량 환불 기준",
+      "summary": "단말기 정보 미변경 차량 환불 기준",
+      "content": "",
+      "tags": "단말기, 환불",
+      "attachment_url": "https://drive.google.com/file/d/18rRdWSkno-syY4aRkSnhEouM21mlBult/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T06:53:29.848Z"
+  "exported_at": "2025-10-10T07:18:57.418Z"
 }
