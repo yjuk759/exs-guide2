@@ -433,7 +433,9 @@ function renderHome(root){
 
   const grid = el('<div class="grid"></div>');
 
+  // ✅ 최상위(부모 없는) 카테고리만 노출
   [...state.categories]
+    .filter(cat => !cat.parent_id)
     .sort((a,b)=>(a.order||0)-(b.order||0))
     .forEach(cat=>{
       const count = state.manuals.filter(m=>m.category_id===cat.id).length;
@@ -452,10 +454,8 @@ function renderHome(root){
         const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
         const btnEdit   = el('<button class="mini ghost">수정</button>');
         const btnDelete = el('<button class="mini danger">삭제</button>');
-
         btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditCategory(cat.id); };
         btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteCategory(cat.id); };
-
         adminRow.appendChild(btnEdit);
         adminRow.appendChild(btnDelete);
         card.appendChild(adminRow);
@@ -495,55 +495,87 @@ function renderCategory(root,catId){
     c.appendChild(headerActions);
   }
 
-  // 매뉴얼 목록
+  // ✅ 하위 카테고리 먼저 표시
+  const children = state.categories
+    .filter(x => x.parent_id === catId)
+    .sort((a,b)=>(a.order||0)-(b.order||0));
+
+  if (children.length){
+    c.appendChild(el('<div class="kicker" style="margin:6px 0 8px;">하위 카테고리</div>'));
+    const childGrid = el('<div class="grid"></div>');
+    children.forEach(ch=>{
+      const count = state.manuals.filter(m=>m.category_id===ch.id).length;
+      const card = el(`
+        <div class="card">
+          <div class="badge">${ch.icon||'📁'}</div>
+          <div class="title">${ch.name}</div>
+          <div class="sub">${count}개 문서</div>
+        </div>`);
+      card.onclick = ()=>navigate('category',{id:ch.id});
+
+      if (state.admin){
+        const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
+        const btnEdit   = el('<button class="mini ghost">수정</button>');
+        const btnDelete = el('<button class="mini danger">삭제</button>');
+        btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditCategory(ch.id); };
+        btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteCategory(ch.id); };
+        adminRow.appendChild(btnEdit);
+        adminRow.appendChild(btnDelete);
+        card.appendChild(adminRow);
+      }
+
+      childGrid.appendChild(card);
+    });
+    c.appendChild(childGrid);
+  }
+
+  // 📄 매뉴얼 목록(요약/태그 유지 + 첨부 1개 즉시 열기)
   const manuals = state.manuals.filter(m=>m.category_id===catId);
-const list = el('<div class="list"></div>');
+  const list = el('<div class="list" style="margin-top:12px;"></div>');
 
-if (manuals.length === 0){
-  list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>'));
-} else {
-  manuals.forEach(m=>{
-    const hasSummary = (m.summary || '').trim().length > 0;
-    const tagsHTML = m.tags
-      ? `<div class="chips">` + m.tags.split(',')
-          .map(t => `<span class="chip">${t.trim()}</span>`)
-          .join('') + `</div>`
-      : '';
-    const subHTML = hasSummary ? `<div class="sub">${m.summary}</div>` : '';
+  if (manuals.length === 0){
+    list.appendChild(el('<div class="item"><div class="sub">이 카테고리에 등록된 매뉴얼이 없습니다.</div></div>'));
+  } else {
+    manuals.forEach(m=>{
+      const hasSummary = (m.summary || '').trim().length > 0;
+      const tagsHTML = m.tags
+        ? `<div class="chips">` + m.tags.split(',').map(t=>`<span class="chip">${t.trim()}</span>`).join('') + `</div>`
+        : '';
+      const subHTML = hasSummary ? `<div class="sub">${m.summary}</div>` : '';
+      const item = el(`
+        <div class="item">
+          <div class="title">${m.title}</div>
+          ${subHTML}
+          ${tagsHTML}
+        </div>
+      `);
 
-    const item = el(`
-      <div class="item">
-        <div class="title">${m.title}</div>
-        ${subHTML}
-        ${tagsHTML}
-      </div>
-    `);
       item.onclick = () => {
-     const atts = getAttachments(m);   // 첨부 여러 개 처리
-     if (atts.length === 1) {
-       window.open(atts[0].url, "_blank");   // 링크 1개면 바로 열기
-     } else {
-       navigate('manual', { id: m.id });     // 0개 또는 2개 이상이면 상세 페이지
-     }
-   };
-      // 관리자 버튼(수정/삭제)
-       if (state.admin){
-       const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
-       const btnEdit   = el('<button class="mini ghost">수정</button>');
-       const btnDelete = el('<button class="mini danger">삭제</button>');
-       btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditManual(m.id); };
-       btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteManual(m.id); };
-       adminRow.appendChild(btnEdit);
-       adminRow.appendChild(btnDelete);
-       item.appendChild(adminRow);
-     }
+        const atts = getAttachments(m);
+        if (atts.length === 1) {
+          window.open(atts[0].url, "_blank");       // 링크 1개면 바로 열기
+        } else {
+          navigate('manual', { id: m.id });         // 0개 또는 2개 이상이면 상세
+        }
+      };
 
-     list.appendChild(item);
-   });
- }
+      if (state.admin){
+        const adminRow = el('<div class="admin-mini" style="margin-top:8px;display:flex;gap:6px;"></div>');
+        const btnEdit   = el('<button class="mini ghost">수정</button>');
+        const btnDelete = el('<button class="mini danger">삭제</button>');
+        btnEdit.onclick   = (e)=>{ e.stopPropagation(); showEditManual(m.id); };
+        btnDelete.onclick = (e)=>{ e.stopPropagation(); deleteManual(m.id); };
+        adminRow.appendChild(btnEdit);
+        adminRow.appendChild(btnDelete);
+        item.appendChild(adminRow);
+      }
 
- c.appendChild(list);
- root.appendChild(c);
+      list.appendChild(item);
+    });
+  }
+
+  c.appendChild(list);
+  root.appendChild(c);
 }
 
 function renderManual(root,id){
