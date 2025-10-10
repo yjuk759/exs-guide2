@@ -59,7 +59,7 @@
       "name": "PC·보안",
       "order": 4,
       "icon": "📄",
-      "parent_id": null
+      "parent_id": "CAT_PC"
     }
   ],
   "manuals": [
