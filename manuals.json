@@ -1,5 +1,5 @@
 {
-  "version": "20251010-110137",
+  "version": "20251010-131835",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -24,6 +24,41 @@
       "name": "테스트용2",
       "order": 0,
       "icon": "📌"
+    },
+    {
+      "id": "CAT_SAL",
+      "name": "할인",
+      "order": 0,
+      "icon": "📢",
+      "parent_id": "CAT_OPS"
+    },
+    {
+      "id": "CAT_CAR",
+      "name": "전자카드",
+      "order": 2,
+      "icon": "💳",
+      "parent_id": "CAT_OPS"
+    },
+    {
+      "id": "CAT_MAC",
+      "name": "무인정산기",
+      "order": 3,
+      "icon": "🛠️",
+      "parent_id": "CAT_OPS"
+    },
+    {
+      "id": "CAT_REF",
+      "name": "환불",
+      "order": 4,
+      "icon": "🔁",
+      "parent_id": "CAT_OPS"
+    },
+    {
+      "id": "CAT_EVA",
+      "name": "심사",
+      "order": 5,
+      "icon": "🕓",
+      "parent_id": "CAT_OPS"
     }
   ],
   "manuals": [
@@ -92,7 +127,7 @@
     },
     {
       "id": "MNL_OPS_001",
-      "category_id": "CAT_OPS",
+      "category_id": "CAT_CAR",
       "title": "전자카드 충전 및 취소",
       "summary": "전자카드 충전 및 취소 절차",
       "content": "첨부1 : 전자카드 충전\n첨부2 : 전자카드 충전 취소",
@@ -101,7 +136,7 @@
     },
     {
       "id": "MNL_OPS_003",
-      "category_id": "CAT_OPS",
+      "category_id": "CAT_CAR",
       "title": "하자카드 처리 및 재발급 방법 (취소방법 포함)",
       "summary": "하자카드 처리 및 재발급 절차",
       "content": "첨부1 : 하자카드 처리 및 재발급 방법\n첨부2 : 재발급 및 하자카드 처리 취소 방법",
@@ -110,7 +145,7 @@
     },
     {
       "id": "MNL_OPS_005",
-      "category_id": "CAT_OPS",
+      "category_id": "CAT_CAR",
       "title": "하자카드 처리 및 잔액이체 방법",
       "summary": "하자카드 처리 및 잔액이체 절차",
       "content": "",
@@ -119,7 +154,7 @@
     },
     {
       "id": "MNL_OPS_006",
-      "category_id": "CAT_OPS",
+      "category_id": "CAT_MAC",
       "title": "무인정산기 초기화 방법",
       "summary": "무인정산기 초기화",
       "content": "",
@@ -128,7 +163,7 @@
     },
     {
       "id": "MNL_OPS_007",
-      "category_id": "CAT_OPS",
+      "category_id": "CAT_MAC",
       "title": "무인정산기 음성 오류 처리 방법",
       "summary": "무인정산기 음성 오류 처리 절차",
       "content": "",
@@ -163,5 +198,5 @@
       "attachment_url": "https://drive.google.com/file/d/1D128VCaYHutRTPgHo16nynTjlxdsAf_h/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T02:01:37.427Z"
+  "exported_at": "2025-10-10T04:18:35.916Z"
 }
