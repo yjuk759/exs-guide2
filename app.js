@@ -40,15 +40,6 @@ function filterBySearch(list){
   return list.filter(x => ((x.title||'')+(x.summary||'')+(x.tags||'')).toLowerCase().includes(state.search));
 }
 
-function normalizeCategories() {
-  state.categories.forEach(c => {
-    // "", "null", undefined → null로 통일
-    if (c.parent_id === '' || c.parent_id === 'null' || c.parent_id === undefined) {
-      c.parent_id = null;
-    }
-  });
-}
-
 // ===== 하위 카테고리 포함 매뉴얼 개수 계산 =====
 function getDescendantIds(catId){
   const ids = [catId];
@@ -81,6 +72,61 @@ function getAttachments(m){
   if (!raw) return [];
   const urls = raw.split(',').map(s => s.trim()).filter(Boolean);
   return urls.map((u, i) => ({ title: `첨부${i+1}`, url: u }));
+}
+
+// ===== 트리/카운트 유틸 =====
+
+// 잘못된 parent_id 정리: '', '최상위', undefined, 자기 자신, 존재하지 않는 부모 -> null
+function normalizeCategories() {
+  const ids = new Set(state.categories.map(c => c.id));
+  for (const c of state.categories) {
+    let p = c.parent_id;
+    if (p === '' || p === undefined || p === '최상위') p = null;
+    if (p === c.id) p = null;                 // self parent 금지
+    if (p != null && !ids.has(p)) p = null;   // 존재하지 않는 부모 금지
+    c.parent_id = p;
+  }
+}
+
+function buildChildrenMap() {
+  const map = new Map();  // parent_id -> childIds
+  map.set(null, []);
+  for (const c of state.categories) {
+    const p = (c.parent_id == null) ? null : c.parent_id;
+    if (!map.has(p)) map.set(p, []);
+    map.get(p).push(c.id);
+    if (!map.has(c.id)) map.set(c.id, []); // 자식 버킷도 미리
+  }
+  return map;
+}
+
+// 순환 방지: seen 사용 (for..of 사용)
+function getDescendants(rootId, childrenMap) {
+  const out = [];
+  const stack = [rootId];
+  const seen = new Set([rootId]);
+  while (stack.length) {
+    const cur = stack.pop();
+    const kids = childrenMap.get(cur) || [];
+    for (const k of kids) {
+      if (seen.has(k)) continue;
+      seen.add(k);
+      out.push(k);
+      stack.push(k);
+    }
+  }
+  return out;
+}
+
+// 하위 포함 매뉴얼 개수
+function countManualsInTree(catId) {
+  const childrenMap = buildChildrenMap();
+  const allIds = new Set([catId, ...getDescendants(catId, childrenMap)]);
+  let n = 0;
+  for (const m of state.manuals) {
+    if (allIds.has(m.category_id)) n++;
+  }
+  return n;
 }
 
 // ===== 저장 =====
@@ -461,7 +507,7 @@ function renderHome(root){
 
   // ✅ 최상위(부모 없는) 카테고리만 노출
   [...state.categories]
-    .filter(cat => !cat.parent_id)
+    .filter(c => c.parent_id == null)
     .sort((a,b)=>(a.order||0)-(b.order||0))
     .forEach(cat=>{
       const count = countManualsInTree(cat.id);
