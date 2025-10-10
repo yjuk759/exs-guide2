@@ -40,6 +40,15 @@ function filterBySearch(list){
   return list.filter(x => ((x.title||'')+(x.summary||'')+(x.tags||'')).toLowerCase().includes(state.search));
 }
 
+function normalizeCategories() {
+  state.categories.forEach(c => {
+    // "", "null", undefined → null로 통일
+    if (c.parent_id === '' || c.parent_id === 'null' || c.parent_id === undefined) {
+      c.parent_id = null;
+    }
+  });
+}
+
 // ===== 하위 카테고리 포함 매뉴얼 개수 계산 =====
 function getDescendantIds(catId){
   const ids = [catId];
@@ -675,6 +684,7 @@ function renderSearch(root){
 async function boot(){
   loadFromLocal();
   loadAdminFromLocal();   // ✅ 관리자 모드 상태 복원
+  normalizeCategories();
   render();
   try{
     const res=await fetch('manuals.json?ts='+Date.now(),{cache:'no-store'});
@@ -684,6 +694,7 @@ async function boot(){
       const localVersion=getLocalVersion();
       if(Array.isArray(data.categories)) state.categories=data.categories;
       if(Array.isArray(data.manuals)) state.manuals=data.manuals;
+      normalizeCategories();
       saveToLocal(remoteVersion??localVersion??null); 
       render();
     }
