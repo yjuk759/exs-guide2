@@ -1,5 +1,5 @@
 {
-  "version": "20251010-131835",
+  "version": "20251010-140056",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -18,12 +18,6 @@
       "name": "긴급상황",
       "order": 3,
       "icon": "🚨"
-    },
-    {
-      "id": "CAT_TES",
-      "name": "테스트용2",
-      "order": 0,
-      "icon": "📌"
     },
     {
       "id": "CAT_SAL",
@@ -59,6 +53,13 @@
       "order": 5,
       "icon": "🕓",
       "parent_id": "CAT_OPS"
+    },
+    {
+      "id": "CAT_PC",
+      "name": "PC·보안",
+      "order": 4,
+      "icon": "📄",
+      "parent_id": null
     }
   ],
   "manuals": [
@@ -106,24 +107,6 @@
       "content": "",
       "tags": "긴급, 위험, 지진",
       "attachment_url": "https://drive.google.com/file/d/1316gyWa1A4mSPHRv_4ZzXkc1fXqqNIiK/view?usp=sharing"
-    },
-    {
-      "id": "MNL_TES_001",
-      "category_id": "CAT_TES",
-      "title": "테스트 매뉴얼",
-      "summary": "테스트",
-      "content": "열심히 일하장",
-      "tags": "테스트",
-      "attachment_url": "https://www.naver.com/"
-    },
-    {
-      "id": "MNL_TES_002",
-      "category_id": "CAT_TES",
-      "title": "테스트2",
-      "summary": "테스트2",
-      "content": "드가장~",
-      "tags": "테스트2, 제발",
-      "attachment_url": "https://drive.google.com/file/d/1D592dBGRrBSxQ5Tsj5AUaffsRvFXbvNm/view?usp=sharing"
     },
     {
       "id": "MNL_OPS_001",
@@ -196,7 +179,34 @@
       "content": "",
       "tags": "소화기, 점",
       "attachment_url": "https://drive.google.com/file/d/1D128VCaYHutRTPgHo16nynTjlxdsAf_h/view?usp=sharing"
+    },
+    {
+      "id": "MNL_PC_001",
+      "category_id": "CAT_PC",
+      "title": "도공망 문제 해결방법",
+      "summary": "도공망 PC 자주 일어나는 오류 해결방법",
+      "content": "",
+      "tags": "도공망, PC",
+      "attachment_url": "https://drive.google.com/file/d/15mDietc8D-Ztf_Es6Abfix4X6guKdRxH/view?usp=sharing"
+    },
+    {
+      "id": "MNL_PC_002",
+      "category_id": "CAT_PC",
+      "title": "인터넷망 문제 해결 방법",
+      "summary": "인터넷망 자주 일어나는 오류 해결방법",
+      "content": "",
+      "tags": "인터넷망, PC",
+      "attachment_url": "https://drive.google.com/file/d/1kUw6M_tu3KPGmaA5eFBYEKFM8UbdtHno/view?usp=sharing"
+    },
+    {
+      "id": "MNL_PC_003",
+      "category_id": "CAT_PC",
+      "title": "통합망 문제 해결방법",
+      "summary": "통합망 자주 일어나는 오류 해결방법",
+      "content": "",
+      "tags": "통합만, PC",
+      "attachment_url": "https://drive.google.com/file/d/1usn8RQ3RGDVegCvbXhemKwoxxkzBl125/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T04:18:35.916Z"
+  "exported_at": "2025-10-10T05:00:56.416Z"
 }
