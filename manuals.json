@@ -1,5 +1,5 @@
 {
-  "version": "20251010-102833",
+  "version": "20251010-110137",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -49,9 +49,9 @@
       "id": "MNL_EMR_001",
       "category_id": "CAT_EMER",
       "title": "대설 발생 시 행동요령",
-      "summary": "대설 발생시 영업소 대응방법",
+      "summary": "대설 대응 가이드북",
       "content": "",
-      "tags": "대설, 대설, 대응, 긴급",
+      "tags": "대설, 긴급, 위험",
       "attachment_url": "https://drive.google.com/file/d/1SDlZCwY_d02jGVSrNq8ER5ifbVG8jnBm/view?usp=sharing"
     },
     {
@@ -67,8 +67,8 @@
       "id": "MNL_EMR_003",
       "category_id": "CAT_EMER",
       "title": "지진 발생 시 행동요령",
-      "summary": "영업소 지진 발생 시 대응방법",
-      "content": "열심히 해결한다",
+      "summary": "지진 대응 가이드북",
+      "content": "",
       "tags": "긴급, 위험, 지진",
       "attachment_url": "https://drive.google.com/file/d/1316gyWa1A4mSPHRv_4ZzXkc1fXqqNIiK/view?usp=sharing"
     },
@@ -134,7 +134,34 @@
       "content": "",
       "tags": "무인정산기, 음성",
       "attachment_url": "https://www.canva.com/design/DAG0mhfLj80/-lOu7jifeZ9a0j54fXKngA/watch?utm_content=DAG0mhfLj80&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha1f4b59402"
+    },
+    {
+      "id": "MNL_EMR_004",
+      "category_id": "CAT_EMER",
+      "title": "폭염 발생시 행동요령",
+      "summary": "폭염 대응 가이드북",
+      "content": "",
+      "tags": "폭염, 위험",
+      "attachment_url": "https://drive.google.com/file/d/1Nh8tGuQ3uNjmRYLCabv7Rrnmz4nQ-6i5/view?usp=sharing"
+    },
+    {
+      "id": "MNL_EMR_005",
+      "category_id": "CAT_EMER",
+      "title": "태풍·호우 발생 시 행동요령",
+      "summary": "태풍·호우 가이드북",
+      "content": "",
+      "tags": "태풍, 호우, 위험",
+      "attachment_url": "https://drive.google.com/file/d/1S4bH1emjKQOPBigo5cT8TLooNtQ0dc2N/view?usp=sharing"
+    },
+    {
+      "id": "MNL_EMR_006",
+      "category_id": "CAT_EMER",
+      "title": "소화기 사용 및 점검 방법",
+      "summary": "소화기 가이드북",
+      "content": "",
+      "tags": "소화기, 점",
+      "attachment_url": "https://drive.google.com/file/d/1D128VCaYHutRTPgHo16nynTjlxdsAf_h/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T01:28:33.452Z"
+  "exported_at": "2025-10-10T02:01:37.427Z"
 }
