@@ -40,6 +40,23 @@ function filterBySearch(list){
   return list.filter(x => ((x.title||'')+(x.summary||'')+(x.tags||'')).toLowerCase().includes(state.search));
 }
 
+// ===== 하위 카테고리 포함 매뉴얼 개수 계산 =====
+function getDescendantIds(catId){
+  const ids = [catId];
+  for (let i = 0; i < ids.length; i++){
+    const cur = ids[i];
+    state.categories.forEach(c=>{
+      if (c.parent_id === cur) ids.push(c.id);
+    });
+  }
+  return ids;
+}
+
+function countManualsInTree(catId){
+  const ids = new Set(getDescendantIds(catId));
+  return state.manuals.reduce((acc, m)=> acc + (ids.has(m.category_id) ? 1 : 0), 0);
+}
+
 // 여러 첨부 URL 지원: m.attachments (배열) 또는 m.attachment_url(콤마 구분)을 통합 파싱
 function getAttachments(m){
   if (!m) return [];
@@ -438,7 +455,7 @@ function renderHome(root){
     .filter(cat => !cat.parent_id)
     .sort((a,b)=>(a.order||0)-(b.order||0))
     .forEach(cat=>{
-      const count = state.manuals.filter(m=>m.category_id===cat.id).length;
+      const count = countManualsInTree(cat.id);
 
       const card = el(`
         <div class="card">
