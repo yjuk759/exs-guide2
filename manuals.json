@@ -1,29 +1,19 @@
 {
-  "version": "20251010-150113",
+  "version": "20251010-155329",
   "categories": [
     {
       "id": "CAT_OPS",
       "name": "영업운영",
       "order": 1,
-      "icon": "🧭"
-    },
-    {
-      "id": "CAT_CUST",
-      "name": "민원응대",
-      "order": 2,
-      "icon": "🗣️"
+      "icon": "🧭",
+      "parent_id": null
     },
     {
       "id": "CAT_EMER",
       "name": "긴급상황",
       "order": 3,
-      "icon": "🚨"
-    },
-    {
-      "id": "CAT_PCS",
-      "name": "PC·보안",
-      "order": 4,
-      "icon": "🖥️",
+      "icon": "🚨",
+      "parent_id": null
     },
     {
       "id": "CAT_SAL",
@@ -59,27 +49,16 @@
       "order": 5,
       "icon": "🕓",
       "parent_id": "CAT_OPS"
+    },
+    {
+      "id": "CAT_PC",
+      "name": "PC·보안",
+      "order": 4,
+      "icon": "💻",
+      "parent_id": null
     }
   ],
   "manuals": [
-    {
-      "id": "MNL_CUST_001",
-      "category_id": "CAT_CUST",
-      "title": "통행권 분실 처리",
-      "summary": "차량번호 확인 및 임시통행권",
-      "content": "차량번호·시간대·구간 조회 후 임시통행권 발급, 본사 시스템에 분실 등록.\n민원인 감정완화 문구 예시 포함.",
-      "tags": "분실, 임시통행권, 민원",
-      "attachment_url": ""
-    },
-    {
-      "id": "MNL_CUST_002",
-      "category_id": "CAT_CUST",
-      "title": "과오납 환불 안내",
-      "summary": "현장 환불 불가 시 절차",
-      "content": "1) 과오납 확인서 작성 → 2) 환불신청 링크·양식 제공 → 3) 처리기한 고지(영업일 기준 ○일).",
-      "tags": "환불, 과오납, 안내",
-      "attachment_url": ""
-    },
     {
       "id": "MNL_EMR_001",
       "category_id": "CAT_EMER",
@@ -180,8 +159,8 @@
       "attachment_url": "https://drive.google.com/file/d/1D128VCaYHutRTPgHo16nynTjlxdsAf_h/view?usp=sharing"
     },
     {
-      "id": "MNL_PCS_001",
-      "category_id": "CAT_PCS",
+      "id": "MNL_PC_001",
+      "category_id": "CAT_PC",
       "title": "도공망 문제 해결방법",
       "summary": "도공망 PC 자주 일어나는 오류 해결방법",
       "content": "",
@@ -189,8 +168,8 @@
       "attachment_url": "https://drive.google.com/file/d/15mDietc8D-Ztf_Es6Abfix4X6guKdRxH/view?usp=sharing"
     },
     {
-      "id": "MNL_PCS_002",
-      "category_id": "CAT_PCS",
+      "id": "MNL_PC_002",
+      "category_id": "CAT_PC",
       "title": "인터넷망 문제 해결 방법",
       "summary": "인터넷망 자주 일어나는 오류 해결방법",
       "content": "",
@@ -198,14 +177,14 @@
       "attachment_url": "https://drive.google.com/file/d/1kUw6M_tu3KPGmaA5eFBYEKFM8UbdtHno/view?usp=sharing"
     },
     {
-      "id": "MNL_PCS_003",
-      "category_id": "CAT_PCS",
+      "id": "MNL_PC_003",
+      "category_id": "CAT_PC",
       "title": "통합망 문제 해결방법",
       "summary": "통합망 자주 일어나는 오류 해결방법",
       "content": "",
-      "tags": "통합망, PC",
+      "tags": "통합만, PC",
       "attachment_url": "https://drive.google.com/file/d/1usn8RQ3RGDVegCvbXhemKwoxxkzBl125/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T06:01:13.361Z"
+  "exported_at": "2025-10-10T06:53:29.848Z"
 }
