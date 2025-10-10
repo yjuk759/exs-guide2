@@ -1,5 +1,5 @@
 {
-  "version": "20251002-134441",
+  "version": "20251010-102833",
   "categories": [
     {
       "id": "CAT_OPS",
@@ -48,29 +48,29 @@
     {
       "id": "MNL_EMR_001",
       "category_id": "CAT_EMER",
-      "title": "차단기 고장 즉응",
-      "summary": "수동개방·안전유도·보고체계",
-      "content": "즉시 수동개방, 차량 정지선 유도, 무전 보고(운영센터/본사).\n로그 기록: 발생시각·차선·처치·복구시각.",
-      "tags": "차단기, 고장, 즉응, 긴급",
-      "attachment_url": ""
+      "title": "대설 발생 시 행동요령",
+      "summary": "대설 발생시 영업소 대응방법",
+      "content": "",
+      "tags": "대설, 대설, 대응, 긴급",
+      "attachment_url": "https://drive.google.com/file/d/1SDlZCwY_d02jGVSrNq8ER5ifbVG8jnBm/view?usp=sharing"
     },
     {
       "id": "MNL_EMR_002",
       "category_id": "CAT_EMER",
-      "title": "화재·연기 발생 시 행동요령",
-      "summary": "119 연계·교통통제",
-      "content": "사람 우선 대피, 119 신고, 소화기 초기진압 시도(가능 범위). 교통통제·우회 유도, 상황일지 작성.",
+      "title": "화재 발생 시 행동요령",
+      "summary": "화 대응 가이드북",
+      "content": "",
       "tags": "화재, 긴급, 통제, 긴급",
-      "attachment_url": ""
+      "attachment_url": "https://drive.google.com/file/d/1QrWTL_12m_RGuwU-63IueR_Zpf57USJK/view?usp=sharing"
     },
     {
       "id": "MNL_EMR_003",
       "category_id": "CAT_EMER",
-      "title": "정전시 대응방법",
-      "summary": "영업소 정전 시 대응전략",
+      "title": "지진 발생 시 행동요령",
+      "summary": "영업소 지진 발생 시 대응방법",
       "content": "열심히 해결한다",
-      "tags": "긴급, 위험",
-      "attachment_url": ""
+      "tags": "긴급, 위험, 지진",
+      "attachment_url": "https://drive.google.com/file/d/1316gyWa1A4mSPHRv_4ZzXkc1fXqqNIiK/view?usp=sharing"
     },
     {
       "id": "MNL_TES_001",
@@ -136,5 +136,5 @@
       "attachment_url": "https://www.canva.com/design/DAG0mhfLj80/-lOu7jifeZ9a0j54fXKngA/watch?utm_content=DAG0mhfLj80&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha1f4b59402"
     }
   ],
-  "exported_at": "2025-10-02T04:44:41.511Z"
+  "exported_at": "2025-10-10T01:28:33.452Z"
 }
