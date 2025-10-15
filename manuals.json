@@ -1,59 +1,52 @@
 {
-  "version": "20251010-162819",
+  "version": "20251015-161019",
   "categories": [
-    {
-      "id": "CAT_OPS",
-      "name": "충북's 영업운영 지식",
-      "order": 1,
-      "icon": "🧭",
-      "parent_id": null
-    },
     {
       "id": "CAT_EMER",
       "name": "긴급상황",
-      "order": 3,
+      "order": 7,
       "icon": "🚨",
       "parent_id": null
     },
     {
       "id": "CAT_SAL",
       "name": "할인",
-      "order": 0,
+      "order": 2,
       "icon": "📢",
-      "parent_id": "CAT_OPS"
+      "parent_id": null
     },
     {
       "id": "CAT_CAR",
       "name": "전자카드",
-      "order": 2,
+      "order": 3,
       "icon": "💳",
-      "parent_id": "CAT_OPS"
+      "parent_id": null
     },
     {
       "id": "CAT_MAC",
       "name": "무인정산기",
-      "order": 3,
+      "order": 4,
       "icon": "🛠️",
-      "parent_id": "CAT_OPS"
+      "parent_id": null
     },
     {
       "id": "CAT_REF",
       "name": "환불",
-      "order": 4,
+      "order": 5,
       "icon": "🔁",
-      "parent_id": "CAT_OPS"
+      "parent_id": null
     },
     {
       "id": "CAT_EVA",
       "name": "심사",
-      "order": 5,
+      "order": 6,
       "icon": "🕓",
-      "parent_id": "CAT_OPS"
+      "parent_id": null
     },
     {
       "id": "CAT_PC",
       "name": "PC·보안",
-      "order": 4,
+      "order": 8,
       "icon": "💻",
       "parent_id": null
     }
@@ -231,5 +224,5 @@
       "attachment_url": "https://drive.google.com/file/d/1fQdjsxBVnv41NTSje6AKk2bdzuD1Bpuf/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-10T07:28:19.233Z"
+  "exported_at": "2025-10-15T07:10:19.513Z"
 }
