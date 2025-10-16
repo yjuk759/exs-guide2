@@ -1,6 +1,6 @@
 {
-  "name": "EXS Guide",
-  "short_name": "EXS Guide",
+  "name": "스마트한 영업시설 매뉴얼",
+  "short_name": "영업시설 매뉴얼",
   "description": "영업운영 · 민원응대 · 긴급상황 매뉴얼",
   "start_url": "/exs-guide2/?src=a2hs",
   "scope": "/exs-guide2/",
