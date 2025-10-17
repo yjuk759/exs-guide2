@@ -1,5 +1,5 @@
 {
-  "version": "20251015-161019",
+  "version": "20251017-143120",
   "categories": [
     {
       "id": "CAT_EMER",
@@ -48,6 +48,13 @@
       "name": "PC·보안",
       "order": 8,
       "icon": "💻",
+      "parent_id": null
+    },
+    {
+      "id": "CAT_UNP_001",
+      "name": "미납",
+      "order": 0,
+      "icon": "💵",
       "parent_id": null
     }
   ],
@@ -185,7 +192,7 @@
       "summary": "할인속성 코드 확인",
       "content": "",
       "tags": "할인, 코드",
-      "attachment_url": "https://drive.google.com/file/d/1t3lz3oiV4HRbwY2C5Y-LJXpeHENDPtzb/view?usp=sharing"
+      "attachment_url": "https://drive.google.com/file/d/1bEwaG6ozcYhQfRhzV3fTL63OP5AUMuKu/view?usp=sharing"
     },
     {
       "id": "MNL_SAL_002",
@@ -222,7 +229,16 @@
       "content": "",
       "tags": "화물차량, 심야할인",
       "attachment_url": "https://drive.google.com/file/d/1fQdjsxBVnv41NTSje6AKk2bdzuD1Bpuf/view?usp=sharing"
+    },
+    {
+      "id": "MNL_UNP_001",
+      "category_id": "CAT_UNP_001",
+      "title": "부가통행료 안내 확인서 등록 및 고지 절차",
+      "summary": "부가통행료 관련 업무 안내",
+      "content": "",
+      "tags": "부가통행료, 고지",
+      "attachment_url": "https://drive.google.com/file/d/14UFawiYiO-23lMLwk191ov3X_p3tOpq0/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-15T07:10:19.513Z"
+  "exported_at": "2025-10-17T05:31:20.531Z"
 }
