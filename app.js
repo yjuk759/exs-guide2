@@ -519,7 +519,7 @@ function renderHome(root){
       const count = countManualsInTree(cat.id);
       const tagList = (cat.tags||'').split(',').map(s=>s.trim()).filter(Boolean);
       const tagsHTML = tagList.length
-      ? `<div class="chips" style="margin-top:6px;">${tagList.map(t=>`<span class="chip">#${t}</span>`).join('')}</div>`
+      ? `<div class="chips" style="margin-top:6px;">${tagList.map(t=>`<span class="chip">${t}</span>`).join('')}</div>`
       : '';
       
       const card = el(`
