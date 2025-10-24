@@ -212,13 +212,16 @@ function showAddCategory(){
     <div class="form-row full"><div><label>이름</label><input id="cat_name" placeholder="영업운영"></div></div>
     <div class="form-row full"><div><label>아이콘(이모지)</label><input id="cat_icon" placeholder="🧭"></div></div>
     <div class="form-row full"><div><label>부모 카테고리</label><select id="cat_parent">${parentOptions}</select></div></div>
+    <div class="form-row full"><div><label>해시태그(콤마)</label><input id="cat_tags" placeholder="전산, 무인정산기"></div></div>
     <div class="info">ID는 manuals의 category_id와 연결됩니다.</div>
   `, () => {
     const id = byId('cat_id').value.trim();
     const order = Number(byId('cat_order').value||0);
     const name = byId('cat_name').value.trim();
     const icon = (byId('cat_icon')?.value.trim()) || '📄';
+    const tags = byId('cat_tags').value.trim();
     let parent_id = byId('cat_parent').value.trim() || null;   // ← let 로 받기
+    
 
     if(!id || !name) return alert('ID와 이름은 필수입니다.');
 
@@ -228,7 +231,7 @@ function showAddCategory(){
       parent_id = null;
     }
 
-    state.categories.push({id, name, order, icon, parent_id});
+    state.categories.push({id, name, order, icon, tags, parent_id});
     saveToLocal(getLocalVersion());
     render();
   });
@@ -322,12 +325,14 @@ function showEditCategory(catId){
     <div class="form-row full"><div><label>이름</label><input id="cat_name" value="${cat.name}"></div></div>
     <div class="form-row full"><div><label>아이콘(이모지)</label><input id="cat_icon" value="${cat.icon||'📄'}"></div></div>
     <div class="form-row full"><div><label>부모 카테고리</label><select id="cat_parent">${parentOptions}</select></div></div>
+    <div class="form-row full"><div><label>해시태그(콤마)</label><input id="cat_tags" value="${cat.tags || ''}"></div></div>
     <div class="info">ID 변경 시 연결된 매뉴얼의 category_id도 함께 변경됩니다.</div>
   `, () => {
     const newId   = byId('cat_id').value.trim();
     const newName = byId('cat_name').value.trim();
     const newOrd  = Number(byId('cat_order').value||0);
     const newIcon = byId('cat_icon').value.trim() || '📄';
+    const newTags = byId('cat_tags').value.trim();
     let parent_id = byId('cat_parent').value.trim() || null;
 
     if(!newId || !newName) return alert('ID와 이름은 필수입니다.');
@@ -349,6 +354,7 @@ function showEditCategory(catId){
     cat.name      = newName;
     cat.order     = newOrd;
     cat.icon      = newIcon;
+    cat.tags      = newTags;
     cat.parent_id = parent_id;
 
     // ID가 바뀌면 관련 참조 업데이트
@@ -515,8 +521,7 @@ function renderHome(root){
       const card = el(`
         <div class="card">
           <div class="badge">${cat.icon||'📁'}</div>
-          <div class="title">${cat.name}</div>
-          <div class="sub">${count}개 문서</div>
+          <div class="title">${cat.name} <span class="cat-count">(${count}개)</span></div>
         </div>`);
 
       card.onclick = ()=>navigate('category',{id:cat.id});
