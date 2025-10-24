@@ -525,7 +525,7 @@ function renderHome(root){
       const card = el(`
         <div class="card">
           <div class="badge">${cat.icon||'📁'}</div>
-          <div class="title">${cat.name} <span class="cat-count">(${count}개)</span></div>
+          <div class="title">${cat.name}<span class="cat-count">(${count})</span></div>
           ${tagsHTML}
         </div>`);
 
