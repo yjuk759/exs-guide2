@@ -1,61 +1,69 @@
 {
-  "version": "20251017-143120",
+  "version": "20251024-103734",
   "categories": [
     {
       "id": "CAT_EMER",
       "name": "긴급상황",
       "order": 7,
       "icon": "🚨",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "대설, 화재, 지진, 폭염, 태풍, 소화기"
     },
     {
       "id": "CAT_SAL",
       "name": "할인",
       "order": 2,
       "icon": "📢",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "할인코드, 보트견인, 심야할인"
     },
     {
       "id": "CAT_CAR",
       "name": "전자카드",
       "order": 3,
       "icon": "💳",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "충전, 취소, 하자카드, 재발급, 잔액이체"
     },
     {
       "id": "CAT_MAC",
       "name": "무인정산기",
       "order": 4,
       "icon": "🛠️",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "초기화, 음성오류"
     },
     {
       "id": "CAT_REF",
       "name": "환불",
       "order": 5,
       "icon": "🔁",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "단말기"
     },
     {
       "id": "CAT_EVA",
       "name": "심사",
       "order": 6,
       "icon": "🕓",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "근무확인서"
     },
     {
       "id": "CAT_PC",
       "name": "PC·보안",
       "order": 8,
       "icon": "💻",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "도공망, 인터넷망, 통합망"
     },
     {
       "id": "CAT_UNP_001",
       "name": "미납",
       "order": 0,
       "icon": "💵",
-      "parent_id": null
+      "parent_id": null,
+      "tags": "부가통행료"
     }
   ],
   "manuals": [
@@ -128,7 +136,7 @@
       "title": "무인정산기 음성 오류 처리 방법",
       "summary": "무인정산기 음성 오류 처리 절차",
       "content": "",
-      "tags": "무인정산기, 음성",
+      "tags": "무인정산기, 음성오류",
       "attachment_url": "https://www.canva.com/design/DAG0mhfLj80/-lOu7jifeZ9a0j54fXKngA/watch?utm_content=DAG0mhfLj80&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha1f4b59402"
     },
     {
@@ -155,7 +163,7 @@
       "title": "소화기 사용 및 점검 방법",
       "summary": "소화기 가이드북",
       "content": "",
-      "tags": "소화기, 점",
+      "tags": "소화기, 점검",
       "attachment_url": "https://drive.google.com/file/d/1D128VCaYHutRTPgHo16nynTjlxdsAf_h/view?usp=sharing"
     },
     {
@@ -182,7 +190,7 @@
       "title": "통합망 문제 해결방법",
       "summary": "통합망 자주 일어나는 오류 해결방법",
       "content": "",
-      "tags": "통합만, PC",
+      "tags": "통합망, PC",
       "attachment_url": "https://drive.google.com/file/d/1usn8RQ3RGDVegCvbXhemKwoxxkzBl125/view?usp=sharing"
     },
     {
@@ -240,5 +248,5 @@
       "attachment_url": "https://drive.google.com/file/d/14UFawiYiO-23lMLwk191ov3X_p3tOpq0/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-17T05:31:20.531Z"
+  "exported_at": "2025-10-24T01:37:34.809Z"
 }
