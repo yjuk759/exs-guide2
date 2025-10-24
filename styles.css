@@ -357,3 +357,10 @@ input, textarea, [contenteditable="true"] {
   user-select: text;
   -webkit-touch-callout: default;
 }
+
+/* 카테고리 개수 숫자 스타일 */
+.cat-count {
+  font-weight: 600;
+  color: #5b6b91;
+  font-size: 90%;
+}
