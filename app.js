@@ -522,6 +522,7 @@ function renderHome(root){
         <div class="card">
           <div class="badge">${cat.icon||'📁'}</div>
           <div class="title">${cat.name} <span class="cat-count">(${count}개)</span></div>
+          ${tagsHTML}
         </div>`);
 
       card.onclick = ()=>navigate('category',{id:cat.id});
