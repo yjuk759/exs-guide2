@@ -517,7 +517,11 @@ function renderHome(root){
     .sort((a,b)=>(a.order||0)-(b.order||0))
     .forEach(cat=>{
       const count = countManualsInTree(cat.id);
-
+      const tagList = (cat.tags||'').split(',').map(s=>s.trim()).filter(Boolean);
+      const tagsHTML = tagList.length
+      ? `<div class="chips" style="margin-top:6px;">${tagList.map(t=>`<span class="chip">#${t}</span>`).join('')}</div>`
+      : '';
+      
       const card = el(`
         <div class="card">
           <div class="badge">${cat.icon||'📁'}</div>
