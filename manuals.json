@@ -1,10 +1,10 @@
 {
-  "version": "20251024-103734",
+  "version": "20251030-085658",
   "categories": [
     {
       "id": "CAT_EMER",
       "name": "긴급상황",
-      "order": 7,
+      "order": 3,
       "icon": "🚨",
       "parent_id": null,
       "tags": "대설, 화재, 지진, 폭염, 태풍, 소화기"
@@ -20,7 +20,7 @@
     {
       "id": "CAT_CAR",
       "name": "전자카드",
-      "order": 3,
+      "order": 1,
       "icon": "💳",
       "parent_id": null,
       "tags": "충전, 취소, 하자카드, 재발급, 잔액이체"
@@ -28,7 +28,7 @@
     {
       "id": "CAT_MAC",
       "name": "무인정산기",
-      "order": 4,
+      "order": 8,
       "icon": "🛠️",
       "parent_id": null,
       "tags": "초기화, 음성오류"
@@ -52,7 +52,7 @@
     {
       "id": "CAT_PC",
       "name": "PC·보안",
-      "order": 8,
+      "order": 4,
       "icon": "💻",
       "parent_id": null,
       "tags": "도공망, 인터넷망, 통합망"
@@ -60,7 +60,7 @@
     {
       "id": "CAT_UNP_001",
       "name": "미납",
-      "order": 0,
+      "order": 7,
       "icon": "💵",
       "parent_id": null,
       "tags": "부가통행료"
@@ -248,5 +248,5 @@
       "attachment_url": "https://drive.google.com/file/d/14UFawiYiO-23lMLwk191ov3X_p3tOpq0/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-24T01:37:34.809Z"
+  "exported_at": "2025-10-29T23:56:58.141Z"
 }
