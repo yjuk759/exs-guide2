@@ -1,5 +1,5 @@
 {
-  "version": "20251030-085658",
+  "version": "20251030-085958",
   "categories": [
     {
       "id": "CAT_EMER",
@@ -28,7 +28,7 @@
     {
       "id": "CAT_MAC",
       "name": "무인정산기",
-      "order": 8,
+      "order": 5,
       "icon": "🛠️",
       "parent_id": null,
       "tags": "초기화, 음성오류"
@@ -36,7 +36,7 @@
     {
       "id": "CAT_REF",
       "name": "환불",
-      "order": 5,
+      "order": 8,
       "icon": "🔁",
       "parent_id": null,
       "tags": "단말기"
@@ -248,5 +248,5 @@
       "attachment_url": "https://drive.google.com/file/d/14UFawiYiO-23lMLwk191ov3X_p3tOpq0/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-29T23:56:58.141Z"
+  "exported_at": "2025-10-29T23:59:58.440Z"
 }
