@@ -1,5 +1,5 @@
 {
-  "version": "20251030-092857",
+  "version": "20251030-165731",
   "categories": [
     {
       "id": "CAT_EMER",
@@ -71,6 +71,14 @@
       "order": 5,
       "icon": "📱",
       "tags": "가입방법, 미납납부 및 거래내역출력, 통행료정산기 미납납부",
+      "parent_id": null
+    },
+    {
+      "id": "CAT_RES",
+      "name": "운행제한",
+      "order": 10,
+      "icon": "🚛",
+      "tags": "과적, 적재불량, 도로파손",
       "parent_id": null
     }
   ],
@@ -281,7 +289,16 @@
       "content": "",
       "tags": "통행료정산기, 미납, 납",
       "attachment_url": "https://drive.google.com/file/d/17JITJHmxppuEAwimel8TfdEm7lQR3vEb/view?usp=sharing"
+    },
+    {
+      "id": "MNL_RES",
+      "category_id": "CAT_RES",
+      "title": "과적속도 10km/h 초과 시 측정값 유효성 판정 기준",
+      "summary": "",
+      "content": "",
+      "tags": "과적, 속도초과",
+      "attachment_url": "https://drive.google.com/file/d/1lviy9L5ZQXI4RTmnDE1-gqa4jHhyusJm/view?usp=sharing"
     }
   ],
-  "exported_at": "2025-10-30T00:28:57.389Z"
+  "exported_at": "2025-10-30T07:57:31.877Z"
 }
